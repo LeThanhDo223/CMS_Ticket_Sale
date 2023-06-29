@@ -1,0 +1,28 @@
+.timkiem{
+    display: flex;
+width: 437px;
+height: 48px;
+padding: 10px 16px;
+align-items: center;
+gap: 16px;
+flex-shrink: 0;
+
+    
+}
+
+.col_content{
+    border-radius: 24px;
+background: #FFF;
+width: 1567px;
+height: 800px;
+flex-shrink: 0;
+}
+.col_back{
+    background: #F9F6F4;
+}
+.col_texth2{
+    font-size: 300%;
+}
+.timkiem2{
+    width: 300px;
+}
