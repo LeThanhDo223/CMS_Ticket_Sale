@@ -1,50 +1,10 @@
 import React from "react";
-import {
-  HomeOutlined,
-  TagsOutlined,
-  ContainerOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Menu, Layout } from "antd";
-
+import { Layout, Menu } from "antd";
 import "../css/MenuSider.css";
+import { HomeOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons';
 
-type MenuItem = Required<MenuProps>["items"][number];
-
-function getItem(
-  label: React.ReactNode,
-  key: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[],
-  type?: "group"
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    type,
-  } as MenuItem;
-}
-
-// Tạo một mảng items chứa các mục menu
-const items: MenuProps["items"] = [
-  getItem("Trang chủ", "sub1", <HomeOutlined />),
-
-  getItem("Quản lý vé", "sub2", <ContainerOutlined />),
-
-  getItem("Đổi soát vé", "sub3", <TagsOutlined />),
-
-  getItem("Cài đặt", "sub6", <SettingOutlined />, [
-    getItem("Gói dịch vụ", "1"),
-  ]),
-];
+const { SubMenu } = Menu;
 const MenuSider: React.FC = () => {
-  const onClick: MenuProps["onClick"] = (e) => {
-    console.log("click ", e);
-  };
-
   return (
     <Layout className="Menu_sider" style={{ background: "none" }}>
       <div className="layout-container">
@@ -52,15 +12,18 @@ const MenuSider: React.FC = () => {
           <img className="col_img3" src="/images/logo_1.png" alt="" />
         </div>
         <div className="menu-container">
-          <Menu
-            className="menu_text"
-            onClick={onClick}
-            style={{ marginTop: "50px" }}
-            defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
-            mode="vertical"
-            items={items}
-          />
+          <Menu mode="inline">
+            <Menu.Item key="home" icon={<HomeOutlined />}>
+              Home
+            </Menu.Item>
+            <Menu.Item key="users" icon={<UserOutlined />}>
+              Users
+            </Menu.Item>
+            <SubMenu key="settings" icon={<SettingOutlined />} title="Settings">
+              <Menu.Item key="general">General</Menu.Item>
+              <Menu.Item key="profile">Profile</Menu.Item>
+            </SubMenu>
+          </Menu>
         </div>
         <div className="col_tt">
           <p>Copyright @ 2020 Alta Software</p>
