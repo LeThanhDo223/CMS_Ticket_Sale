@@ -5,7 +5,7 @@ import MenuSider from './component/MenuSider';
 import MenuHeader from './component/MenuHeader';
 import Ve from './menu/Ve';
 import LocVe from './component/LocVe';
-import DemoTable from './demo/DemoTable';
+import DoiSoat from './menu/DoiSoat';
 
 function App() {
   return (
@@ -22,16 +22,15 @@ function App() {
       <Route path="/menu" element={<LocVe />} />
     </Routes>
     
-    <Routes>
-      <Route path="/table" element={<DemoTable />} />
-    </Routes>
-
   {/* các component chính */}
   <Routes>
       <Route path="/" element={<ThongKe />} />
     </Routes>
     <Routes>
       <Route path="/ve" element={<Ve />} />
+    </Routes>
+    <Routes>
+      <Route path="/doisoatve" element={<DoiSoat />} />
     </Routes>
   </BrowserRouter>
   );

@@ -21,8 +21,28 @@ flex-shrink: 0;
     background: #F9F6F4;
 }
 .col_texth2{
-    font-size: 300%;
+    font-size: 250%;
 }
 .timkiem2{
     width: 300px;
 }
+
+
+
+
+/* table thống kê*/
+.even-row {
+    background-color: #ffffff; /* Màu trắng */
+  }
+  
+  .odd-row {
+    background-color: #f0f0f0; /* Màu xám nhạt */
+  }
+  .even-row {
+    background-color: #ffffff; /* Màu trắng cho dòng chẵn */
+  }
+  
+  .odd-row {
+    background-color: #F7F8FB;/* Màu xám cho dòng lẻ */
+  }
+/* table */
