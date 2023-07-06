@@ -2,7 +2,7 @@ import React from "react";
 import { Layout, Row, Col, DatePicker } from "antd";
 import type { DatePickerProps } from 'antd';
 
-import "../css/ThongKe.css";
+import "../css/Style.css";
 import MenuHeader from "../component/MenuHeader";
 import MenuSider from "../component/MenuSider";
 

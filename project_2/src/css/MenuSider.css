@@ -28,6 +28,12 @@ letter-spacing: 0.27px;
 .layout-container {
   background: #f9f6f4;
   height: 920px;
+  flex: 0 0 200px;
+  max-width: 200px;
+  min-width: 200px;
+  width: 200px;
+  min-height: 100vh;
+
 }
 
 .col_tt {

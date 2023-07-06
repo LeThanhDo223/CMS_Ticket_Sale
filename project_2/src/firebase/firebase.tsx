@@ -1,19 +1,19 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA9tZwQb0KCEOgSuf4Hi6rjF6FktxtcV2c",
-  authDomain: "project2-e4b89.firebaseapp.com",
-  projectId: "project2-e4b89",
-  storageBucket: "project2-e4b89.appspot.com",
-  messagingSenderId: "450046816462",
-  appId: "1:450046816462:web:fb0b2bf9e2da0d5188a09f"
+  apiKey: "AIzaSyAgVU6Y4AU6qBwAhgqf7KogV-Stx4JlhSk",
+  authDomain: "cms-ticket-sale-882a9.firebaseapp.com",
+  databaseURL: "https://cms-ticket-sale-882a9-default-rtdb.firebaseio.com",
+  projectId: "cms-ticket-sale-882a9",
+  storageBucket: "cms-ticket-sale-882a9.appspot.com",
+  messagingSenderId: "190399194013",
+  appId: "1:190399194013:web:9dd503c1b284d99d0d8574",
+  measurementId: "G-SPCLTZ4W56"
 };
 
-// Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
-export const firestore = getFirestore(app);
+const db = getFirestore(app);
+
+export default db;

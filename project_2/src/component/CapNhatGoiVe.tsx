@@ -5,7 +5,7 @@ import "../css/Style.css";
 import { FilterOutlined  } from '@ant-design/icons';
 const { Group: CheckboxGroup } = Checkbox;
 
-const LocVe: React.FC = () => {
+const CapNhatGoiVe: React.FC = () => {
   const [open, setOpen] = useState(false);
 
   const showModal = () => {
@@ -31,7 +31,6 @@ const LocVe: React.FC = () => {
       <Button className="col_t1"  onClick={showModal}><FilterOutlined />Lọc vé </Button>
       <Modal
         visible={open}
-        title="Title"
         onOk={handleOk}
         onCancel={handleCancel}
         footer={
@@ -42,6 +41,9 @@ const LocVe: React.FC = () => {
           </div>
         }
       >
+        <div style={{ textAlign: "center"}}>
+            <h2>Cập nhật thông tin gói vé</h2>
+          </div>
         <Space direction="horizontal">
           <div>
             <p>Từ ngày</p>
@@ -93,4 +95,4 @@ const LocVe: React.FC = () => {
   );
 };
 
-export default LocVe;
+export default CapNhatGoiVe;

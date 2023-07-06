@@ -24,15 +24,15 @@ const MenuSider: React.FC = () => {
             <Menu.Item  key="/" icon={<HomeOutlined />}>
               <Link  to="/">Trang chủ</Link>
             </Menu.Item>
-            <Menu.Item key="/ve" icon={<FileSearchOutlined />}>
-              <Link to="/ve">Quản lý vé</Link>
+            <Menu.Item key="/QuanLyVe" icon={<FileSearchOutlined />}>
+              <Link to="/QuanLyVe">Quản lý vé</Link>
             </Menu.Item>
-            <Menu.Item key="/doisoatve" icon={<FileSyncOutlined />}>
-              <Link to="/doisoatve">Đổi soát vé</Link>
+            <Menu.Item key="/DoiSoat" icon={<FileSyncOutlined />}>
+              <Link to="/DoiSoat">Đổi soát vé</Link>
             </Menu.Item>
             <SubMenu key="settings" icon={<SettingOutlined />} title="Cài đặt">
-              <Menu.Item key="/caidat">
-                <Link to="/caidat">Gói dịch vụ</Link>
+              <Menu.Item key="/DichVu">
+                <Link to="/DichVu">Gói dịch vụ</Link>
               </Menu.Item>
             </SubMenu>
           </Menu>
