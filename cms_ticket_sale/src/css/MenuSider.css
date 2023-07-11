@@ -1,0 +1,57 @@
+.col_img3 {
+  flex-shrink: 0;
+  padding-left: 10px;
+  padding-top: 20px;
+}
+
+.menu-container .ant-menu-item {
+  margin-bottom: 20px; /* Space below each menu item */
+}
+.menu_text {
+  
+  background: #f9f6f4;
+  color: var(--text, #1E0D03);
+/* 18 medium */
+font-size: 18px;
+font-family: Montserrat;
+font-style: normal;
+font-weight: 500;
+line-height: 26px;
+letter-spacing: 0.27px;
+}
+
+.menu-container .ant-menu-item-selected {
+  background: var(--yellow-0, #FFB800);
+  color: #ffffff; /* Background color when menu item is selected */
+}
+
+.layout-container {
+  background: #f9f6f4;
+  height: 920px;
+  flex: 0 0 200px;
+  max-width: 200px;
+  min-width: 200px;
+  width: 200px;
+  min-height: 100vh;
+
+}
+
+.col_tt {
+  padding-left: 10px;
+  padding-top: 500px;
+  color: var(--text, #1e0d03);
+  /* 14 regular */
+  font-size: 14px;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  opacity: 0.5;
+}
+
+:where(.css-dev-only-do-not-override-12upa3x).ant-menu-light.ant-menu-root.ant-menu-inline,
+:where(.css-dev-only-do-not-override-12upa3x).ant-menu-light > .ant-menu.ant-menu-root.ant-menu-inline,
+:where(.css-dev-only-do-not-override-12upa3x).ant-menu-light.ant-menu-root.ant-menu-vertical,
+:where(.css-dev-only-do-not-override-12upa3x).ant-menu-light > .ant-menu.ant-menu-root.ant-menu-vertical {
+  border-inline-end: none;
+}
