@@ -16,7 +16,7 @@ const onChange: DatePickerProps['onChange'] = (date, dateString) => {
 const { Header, Content, Sider } = Layout;
 const { Search } = Input;
 
-const DoiSoat: React.FC = () => {
+const MenuDoiSoat: React.FC = () => {
   return (
     <Layout className="menu">
       <Sider className="sider">
@@ -112,4 +112,4 @@ const DoiSoat: React.FC = () => {
   );
 };
 
-export default DoiSoat;
+export default MenuDoiSoat;

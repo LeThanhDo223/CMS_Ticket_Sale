@@ -3,13 +3,13 @@ import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
 
 interface PageData {
+  stt: string;
   booking: string;
-  checkin: string;
+  sove: string;
+  ttsd: string;
   ngaysd: string;
   ngayxv: string;
-  sove: string;
-  stt: string;
-  ttsd: string;
+  checkin: string;
 }
 
 export const fetchData = createAsyncThunk("page/fetchData", async () => {

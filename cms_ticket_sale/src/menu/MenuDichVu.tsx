@@ -6,7 +6,7 @@ import MenuHeader from "../component/MenuHeader";
 const { Header, Content, Sider } = Layout;
 //search
 const { Search } = Input;
-const DichVu: React.FC = () => {
+const MenuDichVu: React.FC = () => {
     return(
         <Layout >
         <Sider >
@@ -38,4 +38,4 @@ const DichVu: React.FC = () => {
       </Layout>
     );
 };
-export default DichVu;
+export default MenuDichVu;

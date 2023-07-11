@@ -9,9 +9,9 @@ import LocVe from './component/LocVe';
 import CapNhatGoiVe from './component/CapNhatGoiVe';
 import ThemGoiVe from './component/ThemGoiVe';
 import ThongKe from './menu/ThongKe';
-import Ve from './menu/Ve';
-import DoiSoat from './menu/DoiSoat';
-import DichVu from './menu/DichVu';
+import MenuQuanLy from './menu/MenuQuanLy';
+import MenuDoiSoat from './menu/MenuDoiSoat';
+import MenuDichVu from './menu/MenuDichVu';
 
 function App() {
   return (
@@ -48,13 +48,13 @@ function App() {
         <Route path="/" element={<ThongKe />} />
       </Routes>
       <Routes>
-        <Route path="/QuanLyVe" element={<Ve />} />
+        <Route path="/QuanLyVe" element={<MenuQuanLy />} />
       </Routes>
       <Routes>
-        <Route path="/DoiSoat" element={<DoiSoat />} />
+        <Route path="/DoiSoat" element={<MenuDoiSoat />} />
       </Routes>
       <Routes>
-        <Route path="/DichVu" element={<DichVu />} />
+        <Route path="/DichVu" element={<MenuDichVu />} />
       </Routes>
       {/* các component chính */}
     </BrowserRouter>

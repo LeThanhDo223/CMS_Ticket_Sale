@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Layout, Row, Col, Table, Tag } from "antd";
+import { Layout, Row, Col, Table, Tag, Pagination,Button } from "antd";
 import { fetchData } from "../redux/dataSlice";
 import { RootState } from "../redux/store";
+import { MoreOutlined  } from '@ant-design/icons';
+import "./QuanLyVe.css";
 
 const columns = [
   {
@@ -24,26 +26,27 @@ const columns = [
     title: "Tình trạng sử dụng",
     dataIndex: "ttsd",
     key: "ttsd",
-    render: (ttsd: string[] | string) => (
+    render: (_: any, { ttsd }: { ttsd: string[] }) => (
       <>
-        {Array.isArray(ttsd) ? (
-          ttsd.map((tt, index) => (
-            <Tag
-              color={
-                tt.length > 10
-                  ? "green"
-                  : tt === "Hết hạn"
-                  ? "volcano"
-                  : "geekblue"
-              }
-              key={index}
-            >
-              {tt.toUpperCase()}
+        {ttsd.map((tt) => {
+          let color = "";
+          let displayText = tt;
+          if (tt.length > 10) {
+            color = "green";
+            displayText = `• ${tt}`;
+          } else if (tt === "Hết hạn") {
+            color = "volcano";
+            displayText = `• ${tt}`;
+          } else {
+            color = "geekblue";
+            displayText = `• ${tt}`;
+          }
+          return (
+            <Tag color={color} key={tt}>
+              {displayText.toUpperCase()}
             </Tag>
-          ))
-        ) : (
-          <Tag>{ttsd}</Tag>
-        )}
+          );
+        })}
       </>
     ),
   },
@@ -62,6 +65,12 @@ const columns = [
     dataIndex: "checkin",
     key: "checkin",
   },
+  {
+  title: '',
+  dataIndex: 'actions',
+  key: 'actions',
+  render: () => <Button  type="link"> <MoreOutlined /></Button>,
+},
 ];
 
 const DataList: React.FC = () => {
@@ -69,6 +78,18 @@ const DataList: React.FC = () => {
   const data = useSelector((state: RootState) => state.page.data);
   const loading = useSelector((state: RootState) => state.page.loading);
   const error = useSelector((state: RootState) => state.page.error);
+
+  // page
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const pageSize = 12;
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const currentData = data.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   useEffect(() => {
     dispatch(fetchData() as any);
@@ -82,17 +103,32 @@ const DataList: React.FC = () => {
     return <div>Error: {error}</div>;
   }
 
+  const modifiedData = data.map((item, index) => ({
+    ...item,
+    key: index,currentData,
+    ttsd: Array.isArray(item.ttsd) ? item.ttsd : [item.ttsd],
+  }));
+
   return (
     <Layout>
       <Row>
         <Col span={24}>
           <Table
             columns={columns}
-            dataSource={data.map((item, index) => ({
-              ...item,
-              key: index,
-            }))}
+            dataSource={modifiedData}
             pagination={false}
+            rowClassName={(record, index) =>
+              index % 2 === 0 ? "even-row" : "odd-row"
+            }
+          />
+          <Pagination
+            className="col_pagination"
+            current={currentPage}
+            total={data.length}
+            pageSize={pageSize}
+            showSizeChanger={false}
+            showQuickJumper={false}
+            onChange={handlePageChange}
           />
         </Col>
       </Row>
