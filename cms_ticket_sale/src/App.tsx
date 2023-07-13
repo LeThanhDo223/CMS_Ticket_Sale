@@ -1,18 +1,17 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-import DataList from './QuanLyVe/DanhSach';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MenuSider from './component/MenuSider';
 import MenuHeader from './component/MenuHeader';
-import LocVe from './component/LocVe';
 import CapNhatGoiVe from './component/CapNhatGoiVe';
 import ThemGoiVe from './component/ThemGoiVe';
 import ThongKe from './menu/ThongKe';
 import MenuQuanLy from './menu/MenuQuanLy';
 import MenuDoiSoat from './menu/MenuDoiSoat';
 import MenuDichVu from './menu/MenuDichVu';
-
+import Chon from './QuanLyVe/Chon';
+import Data from './QuanLyVe/demoData';
 function App() {
   return (
     // <Provider store={store}>
@@ -27,18 +26,17 @@ function App() {
       </Routes>
 
       <Routes>
-        <Route path="/menu" element={<LocVe />} />
-      </Routes>
-      <Routes>
         <Route path="/capnhat" element={<CapNhatGoiVe />} />
       </Routes>
       <Routes>
         <Route path="/them" element={<ThemGoiVe />} />
       </Routes>
       <Routes>
-        <Route path="/home" element={<DataList />} />
+        <Route path="/chon" element={<Chon />} />
       </Routes>
-      
+      <Routes>
+        <Route path="/filter" element={<Data />} />
+      </Routes>
       {/* các component Demo */}
       
 

@@ -6,3 +6,53 @@ text-align: center;
 margin-top: 16px;
 
 }
+
+/* chon */
+.bt-chon{
+    border-radius: 8px;
+background: var(--yellow-05, #FFD2A8);
+display: inline-flex;
+flex-direction: column;
+gap: 12px;
+}
+.bt-chon-text{
+    display: flex;
+width: 127px;
+height: 14px;
+flex-direction: column;
+justify-content: center;
+color: var(--text, #1E0D03);
+
+font-family: Montserrat;
+font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: 22px;
+opacity: 0.699999988079071;
+}
+
+:where(.css-dev-only-do-not-override-14wwjjs).ant-popover .ant-popover-inner {
+    background-color: #FFD2A8;
+    
+}
+:where(.css-dev-only-do-not-override-14wwjjs).ant-popover {
+    --antd-arrow-background-color: #FFD2A8;
+}
+/* chon */
+
+:where(.css-dev-only-do-not-override-14wwjjs).ant-tag-geekblue {
+    color: #919DBA;
+    background: #f0f5ff;
+    border-color: #adc6ff;
+}
+:where(.css-dev-only-do-not-override-14wwjjs).ant-tag-green {
+    border-radius: 4px;
+    border: 1px solid var(--promomote, #03AC00);
+    background: #DEF7E0;
+}
+:where(.css-dev-only-do-not-override-14wwjjs).ant-tag-volcano {
+    border-radius: 4px;
+border: 1px solid var(--end, #FD5959);
+background: #F8EBE8;
+
+}

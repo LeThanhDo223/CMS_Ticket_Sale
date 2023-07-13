@@ -6,7 +6,6 @@ import {
   Space,
   Row,
   Col,
-  Radio,
   Checkbox,
   Input ,
   TimePicker,
@@ -14,7 +13,6 @@ import {
 } from "antd";
 import type { DatePickerProps,TimePickerProps } from "antd";
 import "../css/Style.css";
-import { FilterOutlined } from "@ant-design/icons";
 
 const handleChange = (value: { value: string; label: React.ReactNode }) => {
   console.log(value); 
@@ -49,10 +47,7 @@ const ThemGoiVe: React.FC = () => {
 
   return (
     <>
-      <Button className="col_t1" onClick={showModal}>
-        <FilterOutlined />
-        Lọc vé{" "}
-      </Button>
+      <Button onClick={showModal} className="col_b2">Thêm gói vé</Button>
       <Modal 
       width={700}
         visible={open}

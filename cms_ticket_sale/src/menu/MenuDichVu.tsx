@@ -3,6 +3,7 @@ import "../css/Style.css";
 import {Row,Col, Layout,Input,Button } from "antd";
 import MenuSider from "../component/MenuSider";
 import MenuHeader from "../component/MenuHeader";
+import ThemGoiVe from "../component/ThemGoiVe";
 const { Header, Content, Sider } = Layout;
 //search
 const { Search } = Input;
@@ -29,7 +30,7 @@ const MenuDichVu: React.FC = () => {
                 </Col>
                 <Col span={5}>
                   <Button className="col_b1">Xuất file (.csv)</Button>
-                  <Button  className="col_b2">Thêm gói vé</Button>
+                  <ThemGoiVe/>
                 </Col>
               </Row>
           </div>

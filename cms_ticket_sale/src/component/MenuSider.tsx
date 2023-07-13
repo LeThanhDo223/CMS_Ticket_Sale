@@ -20,7 +20,7 @@ const MenuSider: React.FC = () => {
           <img className="col_img3" src="/images/logo_1.png" alt="" />
         </div>
         <div className="menu-container">
-          <Menu className="menu_text" mode="inline" selectedKeys={selectedKeys} onClick={({ key }) => handleMenuClick(key)} defaultOpenKeys={['settings']}>
+          <Menu className="menu_text" mode="inline" selectedKeys={selectedKeys} onClick={({ key }) => handleMenuClick(key)} defaultOpenKeys={['settings']}  style={{ borderRight: "none" }}>
             <Menu.Item  key="/" icon={<HomeOutlined />}>
               <Link  to="/">Trang chủ</Link>
             </Menu.Item>
