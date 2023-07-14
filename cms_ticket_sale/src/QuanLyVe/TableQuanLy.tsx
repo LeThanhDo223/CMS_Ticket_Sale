@@ -1,3 +1,4 @@
+// DataList.tsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Layout, Row, Col, Table, Tag, Pagination, Button, Input } from "antd";
@@ -15,7 +16,7 @@ const DataList: React.FC<{ activeButton: string }> = ({ activeButton }) => {
   const loading = useSelector((state: RootState) => state.page.loading);
   const error = useSelector((state: RootState) => state.page.error);
 
-  // page
+  // Trang
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
 
@@ -50,17 +51,22 @@ const DataList: React.FC<{ activeButton: string }> = ({ activeButton }) => {
     setCurrentPage(1);
   }, [currentData, searchText]);
 
-  const handleFilter = (selectedTtsd: string | null) => {
-    setFilterStatus(selectedTtsd);
+  const handleFilter = (selectedTag: string | null, selectedCheck: string[]) => {
+    setSelectedTag(selectedTag);
+    setSelectedCheck(selectedCheck);
     setCurrentPage(1);
   };
 
-  const [filterStatus, setFilterStatus] = useState<string | null>(null);
-  const filteredData = filterStatus
-    ? filteredBySearchData.filter((item: any) =>
-        item.ttsd.includes(filterStatus)
-      )
-    : filteredBySearchData;
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [selectedCheck, setSelectedCheck] = useState<string[]>([]);
+
+  const filteredData = filteredBySearchData.filter((item: any) => {
+    const isTagMatched =
+      selectedCheck.length === 0 || selectedCheck.includes(item.checkin);
+    const isTtsdMatched =
+      selectedTag === null || item.ttsd.includes(selectedTag);
+    return isTagMatched && isTtsdMatched;
+  });
 
   const modifiedData = filteredData
     .slice(startIndex, endIndex)
@@ -84,7 +90,7 @@ const DataList: React.FC<{ activeButton: string }> = ({ activeButton }) => {
       key: "stt",
     },
     {
-      title: "Booking code",
+      title: "Mã đặt vé",
       dataIndex: "booking",
       key: "booking",
     },
@@ -151,7 +157,7 @@ const DataList: React.FC<{ activeButton: string }> = ({ activeButton }) => {
       key: "stt",
     },
     {
-      title: "Booking code",
+      title: "Mã đặt vé",
       dataIndex: "booking",
       key: "booking",
     },
@@ -248,7 +254,9 @@ const DataList: React.FC<{ activeButton: string }> = ({ activeButton }) => {
         <Col span={24}>
           <Table
             columns={columns}
-            dataSource={activeButton === "giaDinh" ? modifiedDataGiaDinh : modifiedDataSuKien}
+            dataSource={
+              activeButton === "giaDinh" ? modifiedDataGiaDinh : modifiedDataSuKien
+            }
             pagination={false}
             rowClassName={(record, index) =>
               index % 2 === 0 ? "even-row" : "odd-row"

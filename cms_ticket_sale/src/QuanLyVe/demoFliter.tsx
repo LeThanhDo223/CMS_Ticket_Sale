@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Checkbox, Radio, Button } from "antd";
-import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { RadioChangeEvent } from "antd/es/radio";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
 
@@ -39,14 +38,14 @@ const Filter: React.FC<FilterProps> = ({ onFilter }) => {
   return (
     <>
       <Radio.Group
-        onChange={handleTagChange}
+        onChange={handleTagChange}  
         value={selectedTag}
         defaultValue={null}
       >
         <Radio.Button value={null}>All</Radio.Button>
-        <Radio.Button value="nice">Nice</Radio.Button>
-        <Radio.Button value="developer">Developer</Radio.Button>
-        <Radio.Button value="loser">Loser</Radio.Button>
+        <Radio.Button value="Đã sử dụng">Đã sử dụng</Radio.Button>
+        <Radio.Button value="Chưa sử dụng">Chưa sử dụng</Radio.Button>
+        <Radio.Button value="Hết hạn">Hết hạn</Radio.Button>
         <Radio.Button value="cool">Cool</Radio.Button>
         <Radio.Button value="teacher">Teacher</Radio.Button>
       </Radio.Group>

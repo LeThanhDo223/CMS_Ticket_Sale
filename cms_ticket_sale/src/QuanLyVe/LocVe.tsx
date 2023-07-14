@@ -1,24 +1,17 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Modal,
-  DatePicker,
-  Space,
-  Row,
-  Col,
-  Radio,
-  Checkbox,
-} from "antd";
-import type { DatePickerProps, RadioChangeEvent } from "antd";
-import "../css/Style.css";
+import { Button, Modal, DatePicker, Space, Row, Col, Radio, Checkbox } from "antd";
 import { FilterOutlined } from "@ant-design/icons";
 import type { CheckboxValueType } from "antd/es/checkbox/Group";
+import { RadioChangeEvent } from "antd/es/radio";
 
 interface FilterProps {
-  onFilter: (selectedTtsd: string | null) => void;
+  onFilter: (selectedTtsd: string | null, selectedCheck: string[]) => void;
 }
+
 const LocVe: React.FC<FilterProps> = ({ onFilter }) => {
   const [open, setOpen] = useState(false);
+  const [checkedValues, setCheckedValues] = useState<CheckboxValueType[]>([]);
+  const [selectedTtsd, setSelectedTtsd] = useState<string | null>(null);
 
   const showModal = () => {
     setOpen(true);
@@ -32,37 +25,34 @@ const LocVe: React.FC<FilterProps> = ({ onFilter }) => {
     setOpen(false);
   };
 
-  const onDateChange: DatePickerProps["onChange"] = (dates, dateStrings) => {
-    console.log(dates, dateStrings);
+  const onDateChange = () => {
+    // Handle date change logic here
   };
-
-  const [checkedValues, setCheckedValues] = useState<CheckboxValueType[]>([]);
 
   const onChange = (values: CheckboxValueType[]) => {
-    if (values.includes("all")) {
-      setCheckedValues(["all"]);
+    if (values.includes("Tất cả")) {
+      setCheckedValues(["Tất cả"]); // Include "Tất cả" option
     } else {
-      setCheckedValues(values.filter((value) => value !== "all"));
+      setCheckedValues(values.filter((value) => value !== "Tất cả"));
     }
   };
-  //filter radio
-  const [selectedTtsd, setSelectedTtsd] = useState<string | null>(null);
   
+
   const handleTtsdChange = (e: RadioChangeEvent) => {
-    setSelectedTtsd(e.target.value);
+    setSelectedTtsd(e.target.value ?? null);
   };
 
   const handleFilter = () => {
-    onFilter(selectedTtsd);
+    const processedCheck = checkedValues.includes("Tất cả") ? [] : checkedValues.map(String);
+    onFilter(selectedTtsd, processedCheck);
+    setOpen(false)
   };
-
-  // 
 
   return (
     <>
       <Button className="col_t1" onClick={showModal}>
         <FilterOutlined />
-        Lọc vé{" "}
+        Lọc vé
       </Button>
       <Modal
         visible={open}
@@ -70,7 +60,7 @@ const LocVe: React.FC<FilterProps> = ({ onFilter }) => {
         onCancel={handleCancel}
         footer={
           <div style={{ textAlign: "center" }}>
-            <Button  onClick={handleFilter} className="col_t2" key="ok" >
+            <Button onClick={handleFilter} className="col_t2" key="ok">
               Lọc
             </Button>
           </div>
@@ -90,11 +80,15 @@ const LocVe: React.FC<FilterProps> = ({ onFilter }) => {
         <Row>
           <Col>
             <h4>Tình trạng sử dụng</h4>
-            <Radio.Group onChange={handleTtsdChange} name="radiogroup" defaultValue={null}>
+            <Radio.Group
+              onChange={handleTtsdChange}
+              name="radiogroup"
+              value={selectedTtsd}
+            >
               <Radio value={null}>Tất cả</Radio>
               <Radio value="Đã sử dụng">Đã sử dụng</Radio>
-        <Radio value="Chưa sử dụng">Chưa sử dụng</Radio>
-        <Radio value="Hết hạn">Hết hạn</Radio>
+              <Radio value="Chưa sử dụng">Chưa sử dụng</Radio>
+              <Radio value="Hết hạn">Hết hạn</Radio>
             </Radio.Group>
           </Col>
           <Col>
@@ -106,7 +100,7 @@ const LocVe: React.FC<FilterProps> = ({ onFilter }) => {
             >
               <Row>
                 <Col span={8}>
-                  <Checkbox value="all">Tất cả</Checkbox>
+                  <Checkbox value="Tất cả">Tất cả</Checkbox>
                 </Col>
                 <Col span={8}>
                   <Checkbox value="Cổng 1">Cổng 1</Checkbox>

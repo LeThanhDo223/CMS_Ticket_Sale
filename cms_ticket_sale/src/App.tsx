@@ -12,6 +12,7 @@ import MenuDoiSoat from './menu/MenuDoiSoat';
 import MenuDichVu from './menu/MenuDichVu';
 import Chon from './QuanLyVe/Chon';
 import Data from './QuanLyVe/demoData';
+import DataDichVu from './GoiDichVu/TableDichVu';
 function App() {
   return (
     // <Provider store={store}>
@@ -37,6 +38,10 @@ function App() {
       <Routes>
         <Route path="/filter" element={<Data />} />
       </Routes>
+      <Routes>
+        <Route path="/DV" element={<DataDichVu />} />
+      </Routes>
+      
       {/* các component Demo */}
       
 
