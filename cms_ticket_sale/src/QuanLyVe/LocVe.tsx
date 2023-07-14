@@ -109,19 +109,19 @@ const LocVe: React.FC<FilterProps> = ({ onFilter }) => {
                   <Checkbox value="all">Tất cả</Checkbox>
                 </Col>
                 <Col span={8}>
-                  <Checkbox value="1">Cổng 1</Checkbox>
+                  <Checkbox value="Cổng 1">Cổng 1</Checkbox>
                 </Col>
                 <Col span={8}>
-                  <Checkbox value="2">Cổng 2</Checkbox>
+                  <Checkbox value="Cổng 2">Cổng 2</Checkbox>
                 </Col>
                 <Col span={8}>
-                  <Checkbox value="3">Cổng 3</Checkbox>
+                  <Checkbox value="Cổng 3">Cổng 3</Checkbox>
                 </Col>
                 <Col span={8}>
-                  <Checkbox value="4">Cổng 4</Checkbox>
+                  <Checkbox value="Cổng 4">Cổng 4</Checkbox>
                 </Col>
                 <Col span={8}>
-                  <Checkbox value="5">Cổng 5</Checkbox>
+                  <Checkbox value="Cổng 5">Cổng 5</Checkbox>
                 </Col>
               </Row>
             </Checkbox.Group>

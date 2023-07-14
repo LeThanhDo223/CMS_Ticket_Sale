@@ -6,7 +6,7 @@ import Filter from './demoFliter';
 interface DataType {
   key: string;
   name: string;
-  age: number;
+  age: string;
   address: string;
   tags: string[];
 }
@@ -64,34 +64,71 @@ const data: DataType[] = [
   {
     key: '1',
     name: 'John Brown',
-    age: 32,
+    age: 'Cổng 1',
     address: 'New York No. 1 Lake Park',
     tags: ['nice', 'developer'],
   },
   {
     key: '2',
     name: 'Jim Green',
-    age: 42,
+    age: 'Cổng 2',
     address: 'London No. 1 Lake Park',
     tags: ['loser'],
   },
   {
     key: '3',
     name: 'Joe Black',
-    age: 32,
+    age: 'Cổng 3',
     address: 'Sydney No. 1 Lake Park',
     tags: ['cool', 'teacher'],
+  },
+  {
+    key: '4',
+    name: 'Joe Black',
+    age: 'Cổng 3',
+    address: 'Sydney No. 1 Lake Park',
+    tags: ['cool', 'teacher'],
+  },
+  {
+    key: '5',
+    name: 'Jim Green',
+    age: 'Cổng 2',
+    address: 'London No. 1 Lake Park',
+    tags: ['loser'],
+  },
+  {
+    key: '6',
+    name: 'John Brown',
+    age: 'Cổng 2',
+    address: 'New York No. 1 Lake Park',
+    tags: ['nice', 'developer'],
+  },
+  {
+    key: '7',
+    name: 'Jim Green',
+    age: 'Cổng 1',
+    address: 'London No. 1 Lake Park',
+    tags: ['loser'],
   },
 ];
 
 const Data: React.FC = () => {
   const [filteredData, setFilteredData] = useState<DataType[]>(data);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [selectedAges, setSelectedAges] = useState<string[]>([]);
 
-  const handleFilter = (selectedTag: string | null) => {
-    if (selectedTag === 'all') {
+  const handleFilter = (selectedTag: string | null, selectedAges: string[]) => {
+    setSelectedTag(selectedTag);
+    setSelectedAges(selectedAges);
+
+    if (selectedTag === 'all' && selectedAges.length === 0) {
       setFilteredData(data);
     } else {
-      const filtered = data.filter((item) => item.tags.includes(selectedTag!));
+      const filtered = data.filter((item) => {
+        const isAgeMatched = selectedAges.length === 0 || selectedAges.includes(item.age);
+        const isTagMatched = selectedTag === null || selectedTag === 'all' || item.tags.includes(selectedTag);
+        return isAgeMatched && isTagMatched;
+      });
       setFilteredData(filtered);
     }
   };
