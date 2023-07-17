@@ -13,6 +13,7 @@ import {
 } from "antd";
 import type { DatePickerProps,TimePickerProps } from "antd";
 import "../css/Style.css";
+import { EditOutlined } from "@ant-design/icons";
 
 const handleChange = (value: { value: string; label: React.ReactNode }) => {
   console.log(value); 
@@ -20,7 +21,7 @@ const handleChange = (value: { value: string; label: React.ReactNode }) => {
 
 const { Group: CheckboxGroup } = Checkbox;
 
-const ThemGoiVe: React.FC = () => {
+const CapNhat: React.FC = () => {
   const [time, setTime] = useState<string | null>(null);
 
   const handleTimeChange: TimePickerProps['onChange'] = (time, timeString) => {
@@ -45,9 +46,12 @@ const ThemGoiVe: React.FC = () => {
     console.log(dates, dateStrings);
   };
 
+  const [veLeChecked, setVeLeChecked] = useState(false);
+  const [comboChecked, setComboChecked] = useState(false);
+
   return (
     <>
-      <Button onClick={showModal} className="col_b2">Thêm gói vé</Button>
+    <Button  onClick={showModal}  type='link'><EditOutlined/>Cập nhật</Button>
       <Modal 
       width={700}
         visible={open}
@@ -66,12 +70,16 @@ const ThemGoiVe: React.FC = () => {
         }
       >
         <div style={{ textAlign: "center"}}>
-            <h2>Thêm gói vé</h2>
+            <h2>Cập nhật thông tin gói vé</h2>
           </div>
           <Row>
-            <Col span={24}>
-              <h4>Tên gói vé*</h4>
-              <Input style={{width:'300px'}} placeholder="Nhập tên gói vé"></Input>
+            <Col span={12}>
+              <h4>Mã sự kiện*</h4>
+              <Input style={{width:'200px'}} ></Input>
+            </Col>
+            <Col span={12}>
+              <h4>Tên sự kiện</h4>
+              <Input style={{width:'300px'}} ></Input>
             </Col>
           </Row>
         <Space direction="horizontal">
@@ -91,36 +99,58 @@ const ThemGoiVe: React.FC = () => {
         <Row>
           <Col>
             <h4>Giá vé áp dụng</h4>
-            <CheckboxGroup style={{ width: "100%" }}>
-              <Row>
-                <Col span={24}>
-                  <Row>
-                    <Col>
-                    <Checkbox className="col_tx1" value="ve-le"> Vé lẻ (vnđ/vé) với giá</Checkbox>
-                    
-                    </Col>
-                    <Col>
-                    <Input className="col_i1" placeholder="Gía vé" /> 
-                    </Col>
-                    <Col className="col_tx1"> / vé</Col>
-                  </Row>
-                  <Row style={{marginTop:'10px'}}>
-                    <Col>
-                    <Checkbox className="col_tx1" value="Combo">Combo vé với giá</Checkbox>
-                    </Col>
-                    <Col>
-                    <Input className="col_i1" placeholder="Gía vé" />
-                    </Col>
-                    <Col className="col_tx1"> / vé</Col>
-                    <Col> <Input className="col_i2" placeholder="Gía vé" /></Col>
-                    <Col className="col_tx1">
-                    vé
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-              
-            </CheckboxGroup>
+            <CheckboxGroup style={{ width: '100%' }}>
+            <Row>
+              <Col span={24}>
+                <Row>
+                  <Col>
+                    <Checkbox
+                      className="col_tx1"
+                      value="ve-le"
+                      onChange={(e) => setVeLeChecked(e.target.checked)}
+                    >
+                      Vé lẻ (vnđ/vé) với giá
+                    </Checkbox>
+                  </Col>
+                  <Col>
+                    <Input
+                      className="col_i1"
+                      placeholder="Giá vé"
+                      disabled={!veLeChecked} // Disable the input when checkbox is not checked
+                    />
+                  </Col>
+                  <Col className="col_tx1">/ vé</Col>
+                </Row>
+                <Row style={{ marginTop: '10px' }}>
+                  <Col>
+                    <Checkbox
+                      className="col_tx1"
+                      value="Combo"
+                      onChange={(e) => setComboChecked(e.target.checked)}
+                    >
+                      Combo vé với giá
+                    </Checkbox>
+                  </Col>
+                  <Col>
+                    <Input
+                      className="col_i1"
+                      placeholder="Giá vé"
+                      disabled={!comboChecked} // Disable the input when checkbox is not checked
+                    />
+                  </Col>
+                  <Col className="col_tx1">/</Col>
+                  <Col>
+                    <Input
+                      className="col_i2"
+                      placeholder="Vé"
+                      disabled={!comboChecked} // Disable the input when checkbox is not checked
+                    />
+                  </Col>
+                  <Col className="col_tx1">vé</Col>
+                </Row>
+              </Col>
+            </Row>
+          </CheckboxGroup>
           </Col>
           
         </Row>
@@ -156,4 +186,4 @@ const ThemGoiVe: React.FC = () => {
   );
 };
 
-export default ThemGoiVe;
+export default CapNhat;

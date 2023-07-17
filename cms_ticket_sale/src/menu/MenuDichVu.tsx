@@ -3,7 +3,8 @@ import "../css/Style.css";
 import {Row,Col, Layout,Input,Button } from "antd";
 import MenuSider from "../component/MenuSider";
 import MenuHeader from "../component/MenuHeader";
-import ThemGoiVe from "../component/ThemGoiVe";
+import ThemGoiVe from "../GoiDichVu/ThemGoiVe";
+import TableDichVu from "../GoiDichVu/TableDichVu";
 const { Header, Content, Sider } = Layout;
 //search
 const { Search } = Input;
@@ -33,6 +34,11 @@ const MenuDichVu: React.FC = () => {
                   <ThemGoiVe/>
                 </Col>
               </Row>
+              <Row>
+              <Col span={24}>
+                <TableDichVu />
+              </Col>
+            </Row>
           </div>
           </Content>
         </Layout>

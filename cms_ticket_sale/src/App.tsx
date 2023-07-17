@@ -5,14 +5,15 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MenuSider from './component/MenuSider';
 import MenuHeader from './component/MenuHeader';
 import CapNhatGoiVe from './component/CapNhatGoiVe';
-import ThemGoiVe from './component/ThemGoiVe';
+import ThemGoiVe from './GoiDichVu/ThemGoiVe';
 import ThongKe from './menu/ThongKe';
 import MenuQuanLy from './menu/MenuQuanLy';
 import MenuDoiSoat from './menu/MenuDoiSoat';
 import MenuDichVu from './menu/MenuDichVu';
 import Chon from './QuanLyVe/Chon';
 import Data from './QuanLyVe/demoData';
-import DataDichVu from './GoiDichVu/TableDichVu';
+import TableDichVu from './GoiDichVu/TableDichVu';
+import AddDataForm from './GoiDichVu/AddDataForm';
 function App() {
   return (
     // <Provider store={store}>
@@ -39,7 +40,10 @@ function App() {
         <Route path="/filter" element={<Data />} />
       </Routes>
       <Routes>
-        <Route path="/DV" element={<DataDichVu />} />
+        <Route path="/DV" element={<TableDichVu />} />
+      </Routes>
+      <Routes>
+        <Route path="/add" element={<AddDataForm  />} />
       </Routes>
       
       {/* các component Demo */}

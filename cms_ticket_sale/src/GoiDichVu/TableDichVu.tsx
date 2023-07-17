@@ -1,117 +1,143 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Layout, Row, Col, Table, Tag, Pagination } from "antd";
-import { fetchPageDataGD, fetchPageDataSK } from "../redux/dataSlice";
 import { RootState } from "../redux/store";
 import "../QuanLyVe/QuanLyVe.css";
+import { fetchPageDichVu } from "../redux/dataDichVu";
+import moment from "moment";
+import { PageDichVu } from "../redux/dataDichVu";
+import CapNhat from "./CapNhat";
 
-const DataDichVu: React.FC = () => {
+const TableDichVu: React.FC = () => {
   const dispatch = useDispatch();
-  const dataGD = useSelector((state: RootState) => state.page.dataGD);
-  const dataSK = useSelector((state: RootState) => state.page.dataSK);
-  const loading = useSelector((state: RootState) => state.page.loading);
-  const error = useSelector((state: RootState) => state.page.error);
+  const dataDV = useSelector((state: RootState) => state.dataDV);
+  const loading = useSelector((state: RootState) => state.dataDV.loading);
+  const error = useSelector((state: RootState) => state.dataDV.error);
 
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
 
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const activeButton = "giaDinh";
-  const currentData = activeButton === "giaDinh" ? dataGD : dataSK;
-
-  const [searchText, setSearchText] = useState("");
-
-  const handleSearch = (value: string) => {
-    setSearchText(value);
-  };
+  const currentData = dataDV.dataDV;
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
   useEffect(() => {
-    if (activeButton === "giaDinh") {
-      dispatch(fetchPageDataGD() as any);
-    } else if (activeButton === "suKien") {
-      dispatch(fetchPageDataSK() as any);
-    }
-  }, [dispatch, activeButton]);
+    dispatch(fetchPageDichVu() as any);
+  }, [dispatch]);
 
-  const filteredData = currentData.filter((item: any) =>
-    item.sove.toLowerCase().startsWith(searchText.toLowerCase())
-  );
+  const formatDate = (timestamp: any) => {
+    return moment(timestamp.toDate()).format("DD/MM/YYYY HH:mm:ss");
+  };
 
-  const modifiedData = filteredData
+  const modifiedData = currentData
     .slice(startIndex, endIndex)
     .map((item: any, index: number) => ({
       ...item,
       key: index,
       ttsd: Array.isArray(item.ttsd) ? item.ttsd : [item.ttsd],
       isSuKien: !!item.tsk,
+      ngayad: formatDate(item.ngayad),
+      ngayhh: formatDate(item.ngayhh),
     }));
 
-    const columnsGiaDinh = [
-        {
-          title: "STT",
-          dataIndex: "stt",
-          key: "stt",
-        },
-        {
-          title: "Mã đặt vé",
-          dataIndex: "booking",
-          key: "booking",
-        },
-        {
-          title: "Số vé",
-          dataIndex: "sove",
-          key: "sove",
-        },
-        {
-          title: "Tình trạng sử dụng",
-          dataIndex: "ttsd",
-          key: "ttsd",
-          render: (_: any, { ttsd }: { ttsd: string[] }) => (
-            <>
-              {ttsd.map((tt) => {
-                let color = "";
-                let displayText = tt;
-                if (tt.length > 10) {
-                  color = "green";
-                  displayText = `• ${tt}`;
-                } else if (tt === "Hết hạn") {
-                  color = "volcano";
-                  displayText = `• ${tt}`;
-                } else {
-                  color = "geekblue";
-                  displayText = `• ${tt}`;
-                }
-                return (
-                  <Tag color={color} key={tt}>
-                    {displayText.toUpperCase()}
-                  </Tag>
-                );
-              })}
-            </>
-          ),
-        },
-        {
-          title: "Ngày sử dụng",
-          dataIndex: "ngaysd",
-          key: "ngaysd",
-        },
-        {
-          title: "Ngày xuất vé",
-          dataIndex: "ngayxv",
-          key: "ngayxv",
-        },
-        {
-          title: "Cổng check-in",
-          dataIndex: "checkin",
-          key: "checkin",
-        },
-      ];
-
+  const columnsDichVu = [
+    {
+      title: "STT",
+      dataIndex: "stt",
+      key: "stt",
+    },
+    {
+      title: "Mã gói",
+      dataIndex: "magoi",
+      key: "magoi",
+    },
+    {
+      title: "Tên gói vé",
+      dataIndex: "tengoi",
+      key: "tengoi",
+    },
+    {
+      title: "Ngày áp dụng",
+      dataIndex: "ngayad",
+      key: "ngayad",
+      render: (ngayad: string) => (
+        <>
+          {ngayad.split(" ")[0]} {/* Ngày ở định dạng DD/MM/YYYY */}
+          <br />
+          {ngayad.split(" ")[1]} {/* Thời gian ở định dạng HH:mm:ss */}
+        </>
+      ),
+    },
+    {
+      title: "Ngày hết hạn",
+      dataIndex: "ngayhh",
+      key: "ngayhh",
+      render: (ngayhh: string) => (
+        <>
+          {ngayhh.split(" ")[0]} {/* Ngày ở định dạng DD/MM/YYYY */}
+          <br />
+          {ngayhh.split(" ")[1]} {/* Thời gian ở định dạng HH:mm:ss */}
+        </>
+      ),
+    },
+    {
+      title: "Giá vé",
+      dataIndex: "gia",
+      key: "gia",
+      render: (gia: string) => (
+        <div>
+          <span>{gia} VNĐ</span>
+        </div>
+      ),
+    },
+    {
+      title: "Giá combo (VNĐ/Combo)",
+      dataIndex: "giacombo",
+      key: "giacombo",
+      render: (giacombo: string, record: PageDichVu) => (
+        <div>
+          <span>{giacombo} VNĐ</span>
+          <span>/{record.combo} Vé</span>
+        </div>
+      ),
+    },
+    {
+      title: "Tình trạng",
+      dataIndex: "tt",
+      key: "tt",
+      render: (tt: string[]) => (
+        <>
+          {Array.isArray(tt) &&
+            tt.map((ttItem) => {
+              let color = "";
+              let displayText = ttItem;
+              if (ttItem.length > 10) {
+                color = "green";
+                displayText = `• ${ttItem}`;
+              } else {
+                color = "volcano";
+                displayText = `• ${ttItem}`;
+              }
+              return (
+                <Tag color={color} key={ttItem}>
+                  {displayText.toUpperCase()}
+                </Tag>
+              );
+            })}
+        </>
+      ),
+    },
+    {
+      title: "",
+      dataIndex: "actions",
+      key: "actions",
+      render: () => <CapNhat /> ,
+    },
+  ];
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -129,7 +155,7 @@ const DataDichVu: React.FC = () => {
         <Col span={24}>
           <Table
             dataSource={modifiedData}
-            columns={columnsGiaDinh}
+            columns={columnsDichVu}
             pagination={false}
             rowClassName={(record, index) =>
               index % 2 === 0 ? "even-row" : "odd-row"
@@ -138,7 +164,7 @@ const DataDichVu: React.FC = () => {
           <Pagination
             className="col_pagination"
             current={currentPage}
-            total={filteredData.length}
+            total={currentData.length}
             pageSize={pageSize}
             showSizeChanger={false}
             showQuickJumper={false}
@@ -150,4 +176,4 @@ const DataDichVu: React.FC = () => {
   );
 };
 
-export default DataDichVu;
+export default TableDichVu;

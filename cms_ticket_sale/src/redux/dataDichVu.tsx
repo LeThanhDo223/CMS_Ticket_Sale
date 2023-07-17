@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs,addDoc  } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
 
-interface PageDichVu {
+export interface PageDichVu {
   stt: number;
   gia: string;
   giacombo: string;
-  combo:string;
+  combo: string;
   magoi: string;
   ngayad: string;
   ngayhh: string;
@@ -38,6 +38,14 @@ const initialState: PageState = {
   loading: false,
   error: null,
 };
+export const addPageData = createAsyncThunk(
+  "dataDichVu/addPageData",
+  async (data: PageDichVu) => {
+    const pageCollection = collection(firestore, "dataDichVu");
+    await addDoc(pageCollection, data);
+    return data;
+  }
+);
 
 export const dataDichVu = createSlice({
   name: "dataDichVu",
