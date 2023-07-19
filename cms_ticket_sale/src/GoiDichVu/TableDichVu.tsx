@@ -9,6 +9,7 @@ import { PageDichVu } from "../redux/dataDichVu";
 import CapNhat from "./CapNhat";
 
 const TableDichVu: React.FC = () => {
+  // Khai báo state và sử dụng useSelector, useDispatch, useEffect
   const dispatch = useDispatch();
   const dataDV = useSelector((state: RootState) => state.dataDV);
   const loading = useSelector((state: RootState) => state.dataDV.loading);
@@ -16,6 +17,7 @@ const TableDichVu: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
+  const [gioad, setGioad] = useState(""); // Thêm "gioad" vào state của component
 
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
@@ -29,9 +31,13 @@ const TableDichVu: React.FC = () => {
     dispatch(fetchPageDichVu() as any);
   }, [dispatch]);
 
-  const formatDate = (timestamp: any) => {
-    return moment(timestamp.toDate()).format("DD/MM/YYYY HH:mm:ss");
-  };
+  useEffect(() => {
+    // Lấy dữ liệu "gioad" từ "currentData" khi "ngayad" thay đổi
+    const gioadArray = currentData.map((item: PageDichVu) => item.gioad);
+    setGioad(gioadArray.join(", "));
+  }, [currentData]);
+
+  // Các phần mã khác không thay đổi
 
   const modifiedData = currentData
     .slice(startIndex, endIndex)
@@ -40,8 +46,6 @@ const TableDichVu: React.FC = () => {
       key: index,
       ttsd: Array.isArray(item.ttsd) ? item.ttsd : [item.ttsd],
       isSuKien: !!item.tsk,
-      ngayad: formatDate(item.ngayad),
-      ngayhh: formatDate(item.ngayhh),
     }));
 
   const columnsDichVu = [
@@ -64,11 +68,11 @@ const TableDichVu: React.FC = () => {
       title: "Ngày áp dụng",
       dataIndex: "ngayad",
       key: "ngayad",
-      render: (ngayad: string) => (
+      render: (ngayad: string, record: PageDichVu) => (
         <>
-          {ngayad.split(" ")[0]} {/* Ngày ở định dạng DD/MM/YYYY */}
+          {ngayad}
           <br />
-          {ngayad.split(" ")[1]} {/* Thời gian ở định dạng HH:mm:ss */}
+          {record.gioad}
         </>
       ),
     },
@@ -76,11 +80,11 @@ const TableDichVu: React.FC = () => {
       title: "Ngày hết hạn",
       dataIndex: "ngayhh",
       key: "ngayhh",
-      render: (ngayhh: string) => (
+      render: (ngayhh: string, record: PageDichVu) => (
         <>
-          {ngayhh.split(" ")[0]} {/* Ngày ở định dạng DD/MM/YYYY */}
+          {ngayhh}
           <br />
-          {ngayhh.split(" ")[1]} {/* Thời gian ở định dạng HH:mm:ss */}
+          {record.giohh}
         </>
       ),
     },

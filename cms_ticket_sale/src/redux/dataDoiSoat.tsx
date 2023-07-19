@@ -2,27 +2,22 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { collection, getDocs,addDoc  } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
 
-export interface PageDichVu {
+export interface PageDoiSoat {
   stt: number;
-  gia: string;
-  giacombo: string;
-  combo: string;
-  magoi: string;
-  ngayad: string;
-  gioad:string;
-  ngayhh: string;
-  giohh:string;
-  tengoi: string;
+  sove: string;
+  ngaysd: string;
+  loaive: string;
+  checkin: string;
   tt: string;
 }
 
-export const fetchPageDichVu = createAsyncThunk("dataDichVu/fetchPageDichVu", async () => {
-  const pageCollection = collection(firestore, "dataDichVu");
+export const fetchPageDoiSoat = createAsyncThunk("dataDoiSoat/fetchPageDoiSoat", async () => {
+  const pageCollection = collection(firestore, "dataDoiSoat");
   const querySnapshot = await getDocs(pageCollection);
-  const pageData: PageDichVu[] = [];
+  const pageData: PageDoiSoat[] = [];
 
   querySnapshot.forEach((doc) => {
-    const page = doc.data() as PageDichVu;
+    const page = doc.data() as PageDoiSoat;
     pageData.push(page);
   });
 
@@ -30,44 +25,44 @@ export const fetchPageDichVu = createAsyncThunk("dataDichVu/fetchPageDichVu", as
 });
 
 interface PageState {
-  dataDV: PageDichVu[];
+  dataDS: PageDoiSoat[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: PageState = {
-    dataDV: [],
+    dataDS: [],
   loading: false,
   error: null,
 };
 export const addPageData = createAsyncThunk(
-  "dataDichVu/addPageData",
-  async (data: PageDichVu) => {
-    const pageCollection = collection(firestore, "dataDichVu");
+  "dataDoiSoatt/addPageData",
+  async (data: PageDoiSoat) => {
+    const pageCollection = collection(firestore, "dataDoiSoatt");
     await addDoc(pageCollection, data);
     return data;
   }
 );
 
-export const dataDichVu = createSlice({
-  name: "dataDichVu",
+export const dataDoiSoat = createSlice({
+  name: "dataDoiSoat",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchPageDichVu.pending, (state) => {
+      .addCase(fetchPageDoiSoat.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchPageDichVu.fulfilled, (state, action) => {
+      .addCase(fetchPageDoiSoat.fulfilled, (state, action) => {
         state.loading = false;
-        state.dataDV = action.payload;
+        state.dataDS = action.payload;
       })
-      .addCase(fetchPageDichVu.rejected, (state, action) => {
+      .addCase(fetchPageDoiSoat.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch data";
       });
   },
 });
 
-export default dataDichVu.reducer;
+export default dataDoiSoat.reducer;
