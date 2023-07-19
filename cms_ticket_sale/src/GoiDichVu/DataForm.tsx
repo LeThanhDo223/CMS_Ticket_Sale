@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { PageDichVu, addPageData } from "../redux/dataDichVu";
 import { collection, addDoc } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
-import { DatePicker, TimePicker } from "antd";
+import { Col, DatePicker, Row, Select, TimePicker } from "antd";
 import dayjs from "dayjs";
 import "dayjs/locale/vi";
 
@@ -22,38 +22,52 @@ const DataForm: React.FC = () => {
     giohh: "",
     tengoi: "",
     tt: "",
+    mask:"",
+    tensk:"",
   });
+
+  const [tinhTrang, setTinhTrang] = useState<string>("dangApDung");
+
+  const generateRandomMagoi = () => {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numbers = "0123456789";
+    let magoi = "";
+    for (let i = 0; i < 3; i++) {
+      magoi += letters.charAt(Math.floor(Math.random() * letters.length));
+    }
+    for (let i = 0; i < 8; i++) {
+      magoi += numbers.charAt(Math.floor(Math.random() * numbers.length));
+    }
+    return magoi;
+  };
 
   const handleAddData = async () => {
     try {
-      // Randomly generate a 3-letter prefix for magoi
-      const prefix = generateRandomString(3, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
-  
-      // Generate 8 random digits for the numeric part of the code
-      const numericPart = generateRandomString(8, "0123456789");
-  
-      // Combine the prefix and numeric part to form the magoi code
-      const magoiCode = prefix + numericPart;
-  
+      // Generate random magoi
+      const randomMagoi = generateRandomMagoi();
+
       // Convert ngayad and ngayhh to Firebase Timestamps using Day.js
       const ngayadTimestamp = dayjs(newData.ngayad).toISOString();
       const gioadTimestamp = dayjs(newData.gioad, "HH:mm").toISOString();
       const ngayhhTimestamp = dayjs(newData.ngayhh).toISOString();
       const giohhTimestamp = dayjs(newData.giohh, "HH:mm").toISOString();
-  
-      // Save the data to Firebase
+
+      // Save the data to Firebase with the generated magoi and tinhTrang status
       await addDoc(collection(firestore, "dichvu"), {
         ...newData,
-        magoi: magoiCode,
+        magoi: randomMagoi,
         ngayad: ngayadTimestamp,
         gioad: gioadTimestamp,
         ngayhh: ngayhhTimestamp,
         giohh: giohhTimestamp,
+        tt: tinhTrang,
       });
-  
+
       // Dispatch the data to Redux
-      dispatch(addPageData(newData) as any);
-  
+      dispatch(
+        addPageData({ ...newData, magoi: randomMagoi, tt: tinhTrang }) as any
+      );
+
       // Clear the form
       setNewData({
         stt: 0,
@@ -67,30 +81,25 @@ const DataForm: React.FC = () => {
         giohh: "",
         tengoi: "",
         tt: "",
+        mask:"",
+    tensk:"",
       });
+
+      // Reset Tình trạng to the default value
+      setTinhTrang("dangApDung");
     } catch (error) {
       console.error("Error adding data:", error);
     }
   };
-  
-  const generateRandomString = (length: number, characters?: string) => {
-    if (!characters) {
-      characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    }
-    let result = "";
-    const charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-  };
 
   return (
     <div>
-       <input
+      <input
         type="number"
         value={newData.stt}
-        onChange={(e) => setNewData({ ...newData, stt: Number(e.target.value) })}
+        onChange={(e) =>
+          setNewData({ ...newData, stt: Number(e.target.value) })
+        }
         placeholder="STT"
       />
       <input
@@ -116,15 +125,17 @@ const DataForm: React.FC = () => {
         <DatePicker
           style={{ width: "120px" }}
           value={newData.ngayad ? dayjs(newData.ngayad) : null}
-          
-          onChange={(date, dateString) => setNewData({ ...newData, ngayad: dateString })}
+          onChange={(date, dateString) =>
+            setNewData({ ...newData, ngayad: dateString })
+          }
         />
         <h4>Giờ áp dụng</h4>
         <TimePicker
           style={{ width: "120px", marginLeft: "10px" }}
           value={newData.gioad ? dayjs(newData.gioad, "HH:mm") : null}
-          
-          onChange={(time, timeString) => setNewData({ ...newData, gioad: timeString })}
+          onChange={(time, timeString) =>
+            setNewData({ ...newData, gioad: timeString })
+          }
         />
       </div>
 
@@ -134,15 +145,17 @@ const DataForm: React.FC = () => {
         <DatePicker
           style={{ width: "120px" }}
           value={newData.ngayhh ? dayjs(newData.ngayhh) : null}
-         
-          onChange={(date, dateString) => setNewData({ ...newData, ngayhh: dateString })}
+          onChange={(date, dateString) =>
+            setNewData({ ...newData, ngayhh: dateString })
+          }
         />
         <h4>Giờ hết hạn</h4>
         <TimePicker
           style={{ width: "120px", marginLeft: "10px" }}
           value={newData.giohh ? dayjs(newData.giohh, "HH:mm") : null}
-         
-          onChange={(time, timeString) => setNewData({ ...newData, giohh: timeString })}
+          onChange={(time, timeString) =>
+            setNewData({ ...newData, giohh: timeString })
+          }
         />
       </div>
 
@@ -152,12 +165,30 @@ const DataForm: React.FC = () => {
         onChange={(e) => setNewData({ ...newData, tengoi: e.target.value })}
         placeholder="Tên gói"
       />
-      <input
-        type="text"
-        value={newData.tt}
-        onChange={(e) => setNewData({ ...newData, tt: e.target.value })}
-        placeholder="tt"
-      />
+     <Row>
+        <h4>Tình trạng</h4>
+        <Col span={24}>
+          <Select
+            labelInValue
+            value={{
+              value: tinhTrang,
+              label: tinhTrang === "Hết hạn" ? "Hết hạn" : "Đang áp dụng",
+            }}
+            style={{ width: 140 }}
+            onChange={(value) => setTinhTrang(value.value)}
+            options={[
+              {
+                value: "Đang áp dụng",
+                label: "Đang áp dụng",
+              },
+              {
+                value: "Hết hạn",
+                label: "Hết hạn",
+              },
+            ]}
+          />
+        </Col>
+      </Row>
 
       <button onClick={handleAddData}>Thêm dữ liệu</button>
     </div>

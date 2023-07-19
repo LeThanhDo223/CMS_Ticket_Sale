@@ -16,7 +16,7 @@ const TableDichVu: React.FC = () => {
   const error = useSelector((state: RootState) => state.dataDV.error);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 12;
+  const pageSize = 6;
   const [gioad, setGioad] = useState(""); // Thêm "gioad" vào state của component
 
   const startIndex = (currentPage - 1) * pageSize;
@@ -37,17 +37,15 @@ const TableDichVu: React.FC = () => {
     setGioad(gioadArray.join(", "));
   }, [currentData]);
 
-  // Các phần mã khác không thay đổi
-
   const modifiedData = currentData
     .slice(startIndex, endIndex)
     .map((item: any, index: number) => ({
       ...item,
+      stt: index + 1, // Tạo trường 'stt' với giá trị tăng dần tự động
       key: index,
       ttsd: Array.isArray(item.ttsd) ? item.ttsd : [item.ttsd],
       isSuKien: !!item.tsk,
     }));
-
   const columnsDichVu = [
     {
       title: "STT",
@@ -113,25 +111,13 @@ const TableDichVu: React.FC = () => {
       title: "Tình trạng",
       dataIndex: "tt",
       key: "tt",
-      render: (tt: string[]) => (
+      render: (tt: string) => (
         <>
-          {Array.isArray(tt) &&
-            tt.map((ttItem) => {
-              let color = "";
-              let displayText = ttItem;
-              if (ttItem.length > 10) {
-                color = "green";
-                displayText = `• ${ttItem}`;
-              } else {
-                color = "volcano";
-                displayText = `• ${ttItem}`;
-              }
-              return (
-                <Tag color={color} key={ttItem}>
-                  {displayText.toUpperCase()}
-                </Tag>
-              );
-            })}
+          {tt.length > 10 ? (
+            <Tag color="green">• {tt.toUpperCase()}</Tag>
+          ) : (
+            <Tag color="red">• {tt.toUpperCase()}</Tag>
+          )}
         </>
       ),
     },
@@ -143,11 +129,11 @@ const TableDichVu: React.FC = () => {
     },
   ];
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Đang tải dữ liệu...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>Lỗi: {error}</div>;
   }
 
   return (

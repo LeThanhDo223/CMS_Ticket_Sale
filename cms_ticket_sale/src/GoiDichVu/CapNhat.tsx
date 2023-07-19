@@ -7,16 +7,16 @@ import {
   Row,
   Col,
   Checkbox,
-  Input ,
+  Input,
   TimePicker,
-  Select 
+  Select,
 } from "antd";
-import type { DatePickerProps,TimePickerProps } from "antd";
+import type { DatePickerProps, TimePickerProps } from "antd";
 import "../css/Style.css";
 import { EditOutlined } from "@ant-design/icons";
 
 const handleChange = (value: { value: string; label: React.ReactNode }) => {
-  console.log(value); 
+  console.log(value);
 };
 
 const { Group: CheckboxGroup } = Checkbox;
@@ -24,7 +24,7 @@ const { Group: CheckboxGroup } = Checkbox;
 const CapNhat: React.FC = () => {
   const [time, setTime] = useState<string | null>(null);
 
-  const handleTimeChange: TimePickerProps['onChange'] = (time, timeString) => {
+  const handleTimeChange: TimePickerProps["onChange"] = (time, timeString) => {
     console.log(timeString);
     setTime(timeString);
   };
@@ -40,7 +40,7 @@ const CapNhat: React.FC = () => {
 
   const handleCancel = () => {
     setOpen(false);
-  }; 
+  };
 
   const onDateChange: DatePickerProps["onChange"] = (dates, dateStrings) => {
     console.log(dates, dateStrings);
@@ -51,9 +51,12 @@ const CapNhat: React.FC = () => {
 
   return (
     <>
-    <Button  onClick={showModal}  type='link'><EditOutlined/>Cập nhật</Button>
-      <Modal 
-      width={700}
+      <Button onClick={showModal} type="link">
+        <EditOutlined />
+        Cập nhật
+      </Button>
+      <Modal
+        width={700}
         visible={open}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -65,120 +68,132 @@ const CapNhat: React.FC = () => {
             <Button className="col_bt2" key="ok" onClick={handleOk}>
               Lưu
             </Button>
-            
           </div>
         }
       >
-        <div style={{ textAlign: "center"}}>
-            <h2>Cập nhật thông tin gói vé</h2>
-          </div>
-          <Row>
-            <Col span={12}>
-              <h4>Mã sự kiện*</h4>
-              <Input style={{width:'200px'}} ></Input>
-            </Col>
-            <Col span={12}>
-              <h4>Tên sự kiện</h4>
-              <Input style={{width:'300px'}} ></Input>
-            </Col>
-          </Row>
+        <div style={{ textAlign: "center" }}>
+          <h2>Cập nhật thông tin gói vé</h2>
+        </div>
+        <Row>
+          <Col span={12}>
+            <h4>Mã sự kiện*</h4>
+            <Input style={{ width: "200px" }}></Input>
+          </Col>
+          <Col span={12}>
+            <h4>Tên sự kiện</h4>
+            <Input style={{ width: "300px" }}></Input>
+          </Col>
+        </Row>
         <Space direction="horizontal">
-          
-          <div >
+          <div>
             <h4>Ngày áp dụng</h4>
-            <DatePicker style={{width:'120px'}} onChange={onDateChange} />
-            <TimePicker style={{width:'120px',marginLeft:'10px'}} onChange={handleTimeChange} />
-            
+            <DatePicker style={{ width: "120px" }} onChange={onDateChange} />
+            <TimePicker
+              style={{ width: "120px", marginLeft: "10px" }}
+              onChange={handleTimeChange}
+            />
           </div>
-          <div style={{paddingLeft:'50px'}}>
-            <h4>Ngày hết hạn</h4> 
-            <DatePicker style={{width:'120px'}} onChange={onDateChange} />
-            <TimePicker style={{width:'120px',marginLeft:'10px'}} onChange={handleTimeChange} />
+          <div style={{ paddingLeft: "50px" }}>
+            <h4>Ngày hết hạn</h4>
+            <DatePicker style={{ width: "120px" }} onChange={onDateChange} />
+            <TimePicker
+              style={{ width: "120px", marginLeft: "10px" }}
+              onChange={handleTimeChange}
+            />
           </div>
         </Space>
         <Row>
           <Col>
             <h4>Giá vé áp dụng</h4>
-            <CheckboxGroup style={{ width: '100%' }}>
-            <Row>
-              <Col span={24}>
-                <Row>
-                  <Col>
-                    <Checkbox
-                      className="col_tx1"
-                      value="ve-le"
-                      onChange={(e) => setVeLeChecked(e.target.checked)}
-                    >
-                      Vé lẻ (vnđ/vé) với giá
-                    </Checkbox>
-                  </Col>
-                  <Col>
-                    <Input
-                      className="col_i1"
-                      placeholder="Giá vé"
-                      disabled={!veLeChecked} // Disable the input when checkbox is not checked
-                    />
-                  </Col>
-                  <Col className="col_tx1">/ vé</Col>
-                </Row>
-                <Row style={{ marginTop: '10px' }}>
-                  <Col>
-                    <Checkbox
-                      className="col_tx1"
-                      value="Combo"
-                      onChange={(e) => setComboChecked(e.target.checked)}
-                    >
-                      Combo vé với giá
-                    </Checkbox>
-                  </Col>
-                  <Col>
-                    <Input
-                      className="col_i1"
-                      placeholder="Giá vé"
-                      disabled={!comboChecked} // Disable the input when checkbox is not checked
-                    />
-                  </Col>
-                  <Col className="col_tx1">/</Col>
-                  <Col>
-                    <Input
-                      className="col_i2"
-                      placeholder="Vé"
-                      disabled={!comboChecked} // Disable the input when checkbox is not checked
-                    />
-                  </Col>
-                  <Col className="col_tx1">vé</Col>
-                </Row>
-              </Col>
-            </Row>
-          </CheckboxGroup>
+            <CheckboxGroup style={{ width: "100%" }}>
+              <Row>
+                <Col span={24}>
+                  <Row>
+                    <Col>
+                      <Checkbox
+                        className="col_tx1"
+                        value="ve-le"
+                        onChange={(e) => setVeLeChecked(e.target.checked)}
+                      >
+                        Vé lẻ (vnđ/vé) với giá
+                      </Checkbox>
+                    </Col>
+                    <Col>
+                      <Input
+                        className="col_i1"
+                        placeholder="Giá vé"
+                        disabled={!veLeChecked} // Disable the input when checkbox is not checked
+                      />
+                    </Col>
+                    <Col className="col_tx1">/ vé</Col>
+                  </Row>
+                  <Row style={{ marginTop: "10px" }}>
+                    <Col>
+                      <Checkbox
+                        className="col_tx1"
+                        value="Combo"
+                        onChange={(e) => setComboChecked(e.target.checked)}
+                      >
+                        Combo vé với giá
+                      </Checkbox>
+                    </Col>
+                    <Col>
+                      <Input
+                        className="col_i1"
+                        placeholder="Giá vé"
+                        disabled={!comboChecked} // Disable the input when checkbox is not checked
+                      />
+                    </Col>
+                    <Col className="col_tx1">/</Col>
+                    <Col>
+                      <Input
+                        className="col_i2"
+                        placeholder="Vé"
+                        disabled={!comboChecked} // Disable the input when checkbox is not checked
+                      />
+                    </Col>
+                    <Col className="col_tx1">vé</Col>
+                  </Row>
+                </Col>
+              </Row>
+            </CheckboxGroup>
           </Col>
-          
         </Row>
         <Row>
           <h4>Tình trạng</h4>
           <Col span={24}>
-          <Select
-
-    labelInValue
-    defaultValue={{ value: 'dangApDung', label: 'Đang áp dụng' }}
-    style={{ width: 140 }}
-    onChange={handleChange}
-    options={[
-      {
-        value: 'dangApDung',
-        label: 'Đang áp dụng',
-      },
-      {
-        value: 'tat',
-        label: 'Tắt',
-      },
-    ]}
-  />
+            <Select
+              labelInValue
+              defaultValue={{ value: "dangApDung", label: "Đang áp dụng" }}
+              style={{ width: 140 }}
+              onChange={handleChange}
+              options={[
+                {
+                  value: "dangApDung",
+                  label: "Đang áp dụng",
+                },
+                {
+                  value: "tat",
+                  label: "Tắt",
+                },
+              ]}
+            />
           </Col>
         </Row>
         <Row>
           <Col span={24}>
-            <p style={{color: 'var(--text, #1E0D03)', fontSize:'12px', fontStyle:'italic', fontWeight:'400', lineHeight:'normal',opacity: '0.4000000059604645' }}>* là thông tin bắt buộc</p>
+            <p
+              style={{
+                color: "var(--text, #1E0D03)",
+                fontSize: "12px",
+                fontStyle: "italic",
+                fontWeight: "400",
+                lineHeight: "normal",
+                opacity: "0.4000000059604645",
+              }}
+            >
+              * là thông tin bắt buộc
+            </p>
           </Col>
         </Row>
       </Modal>

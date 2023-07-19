@@ -14,6 +14,9 @@ export interface PageDichVu {
   giohh:string;
   tengoi: string;
   tt: string;
+
+    mask:string;
+    tensk:string;
 }
 
 export const fetchPageDichVu = createAsyncThunk("dataDichVu/fetchPageDichVu", async () => {
