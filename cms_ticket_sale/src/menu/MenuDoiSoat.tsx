@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Layout, Row, Col, Input, Button, Radio, Space,DatePicker } from "antd";
 import dayjs from 'dayjs';
 import "../css/Style.css";
@@ -6,6 +6,7 @@ import MenuHeader from "../component/MenuHeader";
 import MenuSider from "../component/MenuSider";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import type { DatePickerProps } from 'antd';
+import TableDoiSoat from "../DoiSoatVe/TableDoiSoat";
 
 dayjs.extend(customParseFormat);
 const dateFormat = 'YYYY-MM-DD';
@@ -17,6 +18,11 @@ const { Header, Content, Sider } = Layout;
 const { Search } = Input;
 
 const MenuDoiSoat: React.FC = () => {
+  const [activeButton, setActiveButton] = useState("giaDinh");
+
+  const handleButtonClick = (button: string) => {
+    setActiveButton(button);
+  };
   return (
     <Layout className="menu">
       <Sider className="sider">
@@ -40,13 +46,30 @@ const MenuDoiSoat: React.FC = () => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={20}>
-                    <Search className="timkiem2" placeholder="Tìm bằng số vé" />
-                  </Col>
-                  <Col span={4}>
-                    <Button className="col_button1">Chốt đổi soát</Button>
-                  </Col>
-                </Row>
+              <Col>
+                <Button
+                  className={`btn-b1 ${activeButton === "giaDinh" ? "active" : ""}`}
+                  type="link"
+                  onClick={() => handleButtonClick("giaDinh")}
+                >
+                  Gói gia đình
+                </Button>
+              </Col>
+              <Col>
+                <Button
+                  className={`btn-b1 ${activeButton === "suKien" ? "active" : ""}`}
+                  type="link"
+                  onClick={() => handleButtonClick("suKien")}
+                >
+                  Gói Sự kiện
+                </Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={24}>
+                <TableDoiSoat activeButton={activeButton} />
+              </Col>
+            </Row>
               </div>
             </Content>
 

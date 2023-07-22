@@ -282,4 +282,14 @@ font-weight: 500;
 
 /* Page Gói Dịch Vụ --------------------- */
 
-
+.bt12{
+  color: var(--yellow-1, #FF993C);
+  font-feature-settings: 'clig' off, 'liga' off;
+  
+  /* 14 medium */
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px; /* 157.143% */
+}

@@ -1,23 +1,41 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, getDocs,addDoc  } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
 
-export interface PageDoiSoat {
-  stt: number;
+interface PageDataGD {
+  stt: string;
   sove: string;
   ngaysd: string;
-  loaive: string;
+  tenloai: string;
   checkin: string;
-  tt: string;
+  tt:string;
+  tsk: string;
 }
 
-export const fetchPageDoiSoat = createAsyncThunk("dataDoiSoat/fetchPageDoiSoat", async () => {
+interface PageDataSK extends PageDataGD {
+  tsk: string;
+}
+
+export const fetchPageDataGD = createAsyncThunk("page/fetchPageDataGD", async () => {
   const pageCollection = collection(firestore, "dataDoiSoat");
   const querySnapshot = await getDocs(pageCollection);
-  const pageData: PageDoiSoat[] = [];
+  const pageData: PageDataGD[] = [];
 
   querySnapshot.forEach((doc) => {
-    const page = doc.data() as PageDoiSoat;
+    const page = doc.data() as PageDataGD;
+    pageData.push(page);
+  });
+
+  return pageData;
+});
+
+export const fetchPageDataSK = createAsyncThunk("page/fetchPageDataSK", async () => {
+  const pageCollection = collection(firestore, "dataDoiSoat");
+  const querySnapshot = await getDocs(pageCollection);
+  const pageData: PageDataSK[] = [];
+
+  querySnapshot.forEach((doc) => {
+    const page = doc.data() as PageDataSK;
     pageData.push(page);
   });
 
@@ -25,44 +43,49 @@ export const fetchPageDoiSoat = createAsyncThunk("dataDoiSoat/fetchPageDoiSoat",
 });
 
 interface PageState {
-  dataDS: PageDoiSoat[];
+  dataGD: PageDataGD[];
+  dataSK: PageDataSK[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: PageState = {
-    dataDS: [],
+  dataGD: [],
+  dataSK: [],
   loading: false,
   error: null,
 };
-export const addPageData = createAsyncThunk(
-  "dataDoiSoatt/addPageData",
-  async (data: PageDoiSoat) => {
-    const pageCollection = collection(firestore, "dataDoiSoatt");
-    await addDoc(pageCollection, data);
-    return data;
-  }
-);
-
-export const dataDoiSoat = createSlice({
-  name: "dataDoiSoat",
+export const pageSlice = createSlice({
+  name: "page",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchPageDoiSoat.pending, (state) => {
+      .addCase(fetchPageDataGD.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchPageDoiSoat.fulfilled, (state, action) => {
+      .addCase(fetchPageDataGD.fulfilled, (state, action) => {
         state.loading = false;
-        state.dataDS = action.payload;
+        state.dataGD = action.payload;
       })
-      .addCase(fetchPageDoiSoat.rejected, (state, action) => {
+      .addCase(fetchPageDataGD.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch data";
+      })
+      .addCase(fetchPageDataSK.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchPageDataSK.fulfilled, (state, action) => {
+        state.loading = false;
+        state.dataSK = action.payload;
+      })
+      .addCase(fetchPageDataSK.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch data";
       });
   },
 });
 
-export default dataDoiSoat.reducer;
+export default pageSlice.reducer;

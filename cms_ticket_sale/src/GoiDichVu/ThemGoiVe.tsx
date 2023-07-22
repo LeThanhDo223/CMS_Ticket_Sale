@@ -37,7 +37,8 @@ const ThemGoiVe: React.FC = () => {
   const dispatch = useDispatch();
 
   const [newData, setNewData] = useState<PageDichVu>({
-    stt: 0,
+  
+    stt: "",
     gia: "",
     giacombo: "",
     combo: "",
@@ -48,11 +49,9 @@ const ThemGoiVe: React.FC = () => {
     giohh: "",
     tengoi: "",
     tt: "",
-    mask:"",
-    tensk:"",
   });
 
-  const [tinhTrang, setTinhTrang] = useState<string>("dangApDung");
+  const [tinhTrang, setTinhTrang] = useState<string>("Đang áp dụng");
 
   const generateRandomMagoi = () => {
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -97,7 +96,8 @@ const ThemGoiVe: React.FC = () => {
 
       // Clear the form
       setNewData({
-        stt: 0,
+        
+        stt: "",
         gia: "",
         giacombo: "",
         combo: "",
@@ -108,12 +108,10 @@ const ThemGoiVe: React.FC = () => {
         giohh: "",
         tengoi: "",
         tt: "",
-        mask:"",
-    tensk:"",
       });
 
       // Reset Tình trạng to the default value
-      setTinhTrang("dangApDung");
+      setTinhTrang("Đang áo dụng");
     } catch (error) {
       console.error("Error adding data:", error);
     }
@@ -267,7 +265,7 @@ const ThemGoiVe: React.FC = () => {
               labelInValue
               value={{
                 value: tinhTrang,
-                label: tinhTrang === "Hết hạn" ? "Hết hạn" : "Đang áp dụng",
+                label: tinhTrang === "Tắt" ? "Tắt" : "Đang áp dụng",
               }}
               style={{ width: 140 }}
               onChange={(value) => setTinhTrang(value.value)}
@@ -277,8 +275,8 @@ const ThemGoiVe: React.FC = () => {
                   label: "Đang áp dụng",
                 },
                 {
-                  value: "Hết hạn",
-                  label: "Hết hạn",
+                  value: "Tắt",
+                  label: "Tắt",
                 },
               ]}
             />

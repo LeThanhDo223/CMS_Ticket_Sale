@@ -56,3 +56,20 @@ border: 1px solid var(--end, #FD5959);
 background: #F8EBE8;
 
 }
+.col_t12{
+    display: inline-flex;
+padding: 11px 24px;
+justify-content: center;
+align-items: center;
+gap: 10px;
+border-radius: 8px;
+background: var(--yellow-1, #FF993C);
+color: #FFF;
+
+/* 18 bold */
+font-family: Montserrat;
+font-size: 18px;
+font-style: normal;
+font-weight: 700;
+line-height: 26px; /* 144.444% */
+}

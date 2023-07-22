@@ -1,43 +1,87 @@
+// DataList.tsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Layout, Row, Col, Table, Pagination, Button } from "antd";
+import { Layout, Row, Col, Table, Tag, Pagination, Button, Input } from "antd";
+import { fetchPageDataGD, fetchPageDataSK } from "../redux/dataDoiSoat";
 import { RootState } from "../redux/store";
 import "../QuanLyVe/QuanLyVe.css";
-import { fetchPageDoiSoat } from "../redux/dataDoiSoat";
+const { Search } = Input;
 
-const TableDoiSoat: React.FC = () => {
+const TableDoiSoat: React.FC<{ activeButton: string }> = ({ activeButton }) => {
   const dispatch = useDispatch();
-  const dataDS = useSelector((state: RootState) => state.dataDS);
-  const loading = useSelector((state: RootState) => state.dataDS.loading);
-  const error = useSelector((state: RootState) => state.dataDS.error);
+  const dataGD = useSelector((state: RootState) => state.page.dataGD);
+  const dataSK = useSelector((state: RootState) => state.page.dataSK);
+  const loading = useSelector((state: RootState) => state.page.loading);
+  const error = useSelector((state: RootState) => state.page.error);
 
+  // Trang
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
 
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const currentData = dataDS.dataDS;
+  const currentData = activeButton === "giaDinh" ? dataGD : dataSK;
 
-  const [chotDoiSoat, setChotDoiSoat] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [filteredBySearchData, setFilteredBySearchData] = useState<any[]>([]);
+
+  const handleSearch = (value: string) => {
+    setSearchText(value);
+  };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  const handleChotDoiSoat = () => {
-    setChotDoiSoat(true);
-  };
+  useEffect(() => {
+    if (activeButton === "giaDinh") {
+      dispatch(fetchPageDataGD() as any);
+    } else if (activeButton === "suKien") {
+      dispatch(fetchPageDataSK() as any);
+    }
+  }, [dispatch, activeButton]);
 
   useEffect(() => {
-    dispatch(fetchPageDoiSoat() as any);
-  }, [dispatch]);
+    const filteredData = currentData.filter((item: any) =>
+      item.sove.toLowerCase().startsWith(searchText.toLowerCase())
+    );
+    setFilteredBySearchData(filteredData);
+    setCurrentPage(1);
+  }, [currentData, searchText]);
 
-  const modifiedData = currentData.slice(startIndex, endIndex).map((item) => ({
-    ...item,
-    tt: chotDoiSoat ? "Đã đổi soát" : "",
-  }));
+  const handleFilter = (selectedTag: string | null, selectedCheck: string[]) => {
+    setSelectedTag(selectedTag);
+    setSelectedCheck(selectedCheck);
+    setCurrentPage(1);
+  };
 
-  const columnsDoiSoat = [
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [selectedCheck, setSelectedCheck] = useState<string[]>([]);
+
+  const filteredData = filteredBySearchData.filter((item: any) => {
+    const isTagMatched =
+      selectedCheck.length === 0 || selectedCheck.includes(item.checkin);
+    const isTtsdMatched =
+      selectedTag === null || item.ttsd.includes(selectedTag);
+    return isTagMatched && isTtsdMatched;
+  });
+
+  const modifiedData = filteredData
+    .slice(startIndex, endIndex)
+    .map((item: any, index: number) => ({
+      ...item,
+      key: index,
+      ttsd: Array.isArray(item.ttsd) ? item.ttsd : [item.ttsd],
+      isSuKien: !!item.tsk,
+    }));
+
+  const modifiedDataGiaDinh = modifiedData.filter(
+    (item: any) => !item.isSuKien
+  );
+
+  const modifiedDataSuKien = modifiedData.filter((item: any) => item.isSuKien);
+
+  const columnsGiaDinh = [
     {
       title: "STT",
       dataIndex: "stt",
@@ -55,20 +99,64 @@ const TableDoiSoat: React.FC = () => {
     },
     {
       title: "Tên loại vé",
-      dataIndex: "loaive",
-      key: "loaive",
+      dataIndex: "tenloai",
+      key: "tenloai",
     },
+   
     {
-      title: "Cổng check-in",
+      title: "Cổng check - in",
       dataIndex: "checkin",
       key: "checkin",
     },
+    
     {
-      title: "Tình trạng",
+      title: "",
       dataIndex: "tt",
       key: "tt",
     },
   ];
+
+  const columnsSuKien = [
+    {
+      title: "STT",
+      dataIndex: "stt",
+      key: "stt",
+    },
+    {
+      title: "Số vé",
+      dataIndex: "sove",
+      key: "sove",
+    },
+    {
+      title: "Tên sự kiện",
+      dataIndex: "tsk",
+      key: "tsk",
+    },
+    {
+      title: "Ngày sử dụng",
+      dataIndex: "ngaysd",
+      key: "ngaysd",
+    },
+    {
+      title: "Tên loại vé",
+      dataIndex: "tenloai",
+      key: "tenloai",
+    },
+   
+    {
+      title: "Cổng check - in",
+      dataIndex: "checkin",
+      key: "checkin",
+    },
+    
+    {
+      title: "",
+      dataIndex: "tt",
+      key: "tt",
+    },
+  ];
+
+  const columns = activeButton === "giaDinh" ? columnsGiaDinh : columnsSuKien;
 
   if (loading) {
     return <div>Loading...</div>;
@@ -81,23 +169,37 @@ const TableDoiSoat: React.FC = () => {
   return (
     <Layout>
       <Row className="col_mt1">
-        <Button onClick={handleChotDoiSoat}>
-          {chotDoiSoat ? "Đã đổi soát" : "Chốt đổi soát"}
-        </Button>
-        {chotDoiSoat && <Button>Xuất file</Button>}
+        <Col span={19}>
+          <Search
+            className="timkiem2"
+            placeholder="Tìm bằng số vé"
+            enterButton
+            value={searchText}
+            onSearch={handleSearch}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+        </Col>
+        <Col span={5}>
+          
+          <Button className="col_t12">Chốt đổi soát</Button>
+        </Col>
       </Row>
       <Row>
         <Col span={24}>
           <Table
-            dataSource={modifiedData}
-            columns={columnsDoiSoat}
+            columns={columns}
+            dataSource={
+              activeButton === "giaDinh" ? modifiedDataGiaDinh : modifiedDataSuKien
+            }
             pagination={false}
-            rowClassName={(record, index) => (index % 2 === 0 ? "even-row" : "odd-row")}
+            rowClassName={(record, index) =>
+              index % 2 === 0 ? "even-row" : "odd-row"
+            }
           />
           <Pagination
             className="col_pagination"
             current={currentPage}
-            total={currentData.length}
+            total={filteredData.length}
             pageSize={pageSize}
             showSizeChanger={false}
             showQuickJumper={false}

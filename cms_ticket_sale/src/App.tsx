@@ -13,8 +13,6 @@ import MenuDichVu from './menu/MenuDichVu';
 import Chon from './QuanLyVe/Chon';
 import Data from './QuanLyVe/demoData';
 import TableDichVu from './GoiDichVu/TableDichVu';
-import TableDoiSoat from './DoiSoatVe/TableDoiSoat';
-import DataForm from './GoiDichVu/DataForm';
 function App() {
   return (
     // <Provider store={store}>
@@ -43,14 +41,9 @@ function App() {
       <Routes>
         <Route path="/DV" element={<TableDichVu />} />
       </Routes>
-      <Routes>
-        <Route path="/add" element={<DataForm  />} />
-      </Routes>
-      <Routes>
-        <Route path="/DS" element={<TableDoiSoat  />} />
-      </Routes>
       
-      {/* các component Demo */}
+      
+      {/* các component Demo Update */}
       
 
 

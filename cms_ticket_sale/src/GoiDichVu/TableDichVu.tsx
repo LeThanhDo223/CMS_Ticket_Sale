@@ -4,7 +4,6 @@ import { Layout, Row, Col, Table, Tag, Pagination } from "antd";
 import { RootState } from "../redux/store";
 import "../QuanLyVe/QuanLyVe.css";
 import { fetchPageDichVu } from "../redux/dataDichVu";
-import moment from "moment";
 import { PageDichVu } from "../redux/dataDichVu";
 import CapNhat from "./CapNhat";
 
@@ -39,13 +38,7 @@ const TableDichVu: React.FC = () => {
 
   const modifiedData = currentData
     .slice(startIndex, endIndex)
-    .map((item: any, index: number) => ({
-      ...item,
-      stt: index + 1, // Tạo trường 'stt' với giá trị tăng dần tự động
-      key: index,
-      ttsd: Array.isArray(item.ttsd) ? item.ttsd : [item.ttsd],
-      isSuKien: !!item.tsk,
-    }));
+   
   const columnsDichVu = [
     {
       title: "STT",
@@ -116,7 +109,7 @@ const TableDichVu: React.FC = () => {
           {tt.length > 10 ? (
             <Tag color="green">• {tt.toUpperCase()}</Tag>
           ) : (
-            <Tag color="red">• {tt.toUpperCase()}</Tag>
+<Tag color="red">• {tt.toUpperCase()}</Tag>
           )}
         </>
       ),
@@ -125,7 +118,9 @@ const TableDichVu: React.FC = () => {
       title: "",
       dataIndex: "actions",
       key: "actions",
-      render: () => <CapNhat /> ,
+      render: (text: string, record: PageDichVu) => (
+        <CapNhat data={record} />
+      ),
     },
   ];
   if (loading) {
@@ -138,9 +133,7 @@ const TableDichVu: React.FC = () => {
 
   return (
     <Layout>
-      <Row className="col_mt1">
-        {/* Phần tìm kiếm */}
-      </Row>
+      <Row className="col_mt1">{/* Phần tìm kiếm */}</Row>
       <Row>
         <Col span={24}>
           <Table
