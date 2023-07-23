@@ -7,6 +7,10 @@ import { RootState } from "../redux/store";
 import "./QuanLyVe.css";
 import Chon from "./Chon";
 import LocVe from "./LocVe";
+// @ts-ignore
+import { saveAs } from "file-saver";
+import Papa from "papaparse";
+
 const { Search } = Input;
 
 const DataList: React.FC<{ activeButton: string }> = ({ activeButton }) => {
@@ -34,7 +38,13 @@ const DataList: React.FC<{ activeButton: string }> = ({ activeButton }) => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
+  const exportToCSV = () => {
+    const csv = Papa.unparse(filteredData, {
+      quotes: true, // Thêm dấu ngoặc kép cho các giá trị có dấu phẩy
+    });
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    saveAs(blob, "data.csv");
+  };
   useEffect(() => {
     if (activeButton === "giaDinh") {
       dispatch(fetchPageDataGD() as any);
@@ -246,9 +256,9 @@ const DataList: React.FC<{ activeButton: string }> = ({ activeButton }) => {
           />
         </Col>
         <Col span={5}>
-          <LocVe onFilter={handleFilter} />
-          <Button className="col_t1">Xuất file (.csv)</Button>
-        </Col>
+      <LocVe onFilter={handleFilter} />
+      <Button onClick={exportToCSV} className="col_t1">Xuất file (.csv)</Button>
+    </Col>
       </Row>
       <Row>
         <Col span={24}>

@@ -11,8 +11,9 @@ import MenuQuanLy from './menu/MenuQuanLy';
 import MenuDoiSoat from './menu/MenuDoiSoat';
 import MenuDichVu from './menu/MenuDichVu';
 import Chon from './QuanLyVe/Chon';
-import Data from './QuanLyVe/demoData';
+import DemoArea  from './ThongKe/Demo';
 import TableDichVu from './GoiDichVu/TableDichVu';
+import DemoPieSK from './ThongKe/TronSK';
 function App() {
   return (
     // <Provider store={store}>
@@ -36,11 +37,17 @@ function App() {
         <Route path="/chon" element={<Chon />} />
       </Routes>
       <Routes>
-        <Route path="/filter" element={<Data />} />
-      </Routes>
-      <Routes>
         <Route path="/DV" element={<TableDichVu />} />
       </Routes>
+      <Routes>
+        <Route path="/TK" element={<DemoArea />} />
+      </Routes>
+      <Routes>
+        <Route path="/tron" element={<DemoPieSK />} />
+      </Routes>
+      
+      
+      
       
       
       {/* các component Demo Update */}

@@ -1,18 +1,21 @@
-// DataList.tsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Layout, Row, Col, Table, Tag, Pagination, Button, Input } from "antd";
-import { fetchPageDataGD, fetchPageDataSK } from "../redux/dataDoiSoat";
+import { Layout, Row, Col, Table, Pagination, Button, Input, Tag } from "antd";
+import { fetchDataGD, fetchDataSK } from "../redux/dataDoiSoat";
 import { RootState } from "../redux/store";
 import "../QuanLyVe/QuanLyVe.css";
 const { Search } = Input;
 
-const TableDoiSoat: React.FC<{ activeButton: string }> = ({ activeButton }) => {
+const TableDoiSoat: React.FC<{ activeButton: string; selectedRadioValue: string | null }> = ({
+  activeButton,
+  selectedRadioValue,
+}) => {
+  const [selectedRadio, setSelectedRadio] = useState<string | null>(selectedRadioValue);
   const dispatch = useDispatch();
-  const dataGD = useSelector((state: RootState) => state.page.dataGD);
-  const dataSK = useSelector((state: RootState) => state.page.dataSK);
-  const loading = useSelector((state: RootState) => state.page.loading);
-  const error = useSelector((state: RootState) => state.page.error);
+  const dataGD = useSelector((state: RootState) => state.dataDS.dataGD);
+  const dataSK = useSelector((state: RootState) => state.dataDS.dataSK);
+  const loading = useSelector((state: RootState) => state.dataDS.loading);
+  const error = useSelector((state: RootState) => state.dataDS.error);
 
   // Trang
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,29 +32,31 @@ const TableDoiSoat: React.FC<{ activeButton: string }> = ({ activeButton }) => {
     setSearchText(value);
   };
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+  const handlePageChange = (dataDS: number) => {
+    setCurrentPage(dataDS);
   };
 
   useEffect(() => {
     if (activeButton === "giaDinh") {
-      dispatch(fetchPageDataGD() as any);
+      dispatch(fetchDataGD() as any);
     } else if (activeButton === "suKien") {
-      dispatch(fetchPageDataSK() as any);
+      dispatch(fetchDataSK() as any);
     }
   }, [dispatch, activeButton]);
 
   useEffect(() => {
+    // Perform filtering based on selectedRadioValue prop
     const filteredData = currentData.filter((item: any) =>
       item.sove.toLowerCase().startsWith(searchText.toLowerCase())
     );
     setFilteredBySearchData(filteredData);
     setCurrentPage(1);
-  }, [currentData, searchText]);
+  }, [currentData, searchText, selectedRadioValue]);
 
-  const handleFilter = (selectedTag: string | null, selectedCheck: string[]) => {
+  const handleFilter = (selectedTag: string | null, selectedCheck: string[], selectedRadioValue: string | null) => {
     setSelectedTag(selectedTag);
     setSelectedCheck(selectedCheck);
+    setSelectedRadio(selectedRadioValue); // Update the local state
     setCurrentPage(1);
   };
 
@@ -63,7 +68,9 @@ const TableDoiSoat: React.FC<{ activeButton: string }> = ({ activeButton }) => {
       selectedCheck.length === 0 || selectedCheck.includes(item.checkin);
     const isTtsdMatched =
       selectedTag === null || item.ttsd.includes(selectedTag);
-    return isTagMatched && isTtsdMatched;
+    const isRadioMatched =
+      selectedRadioValue === null || item.ttds === selectedRadioValue;
+    return isTagMatched && isTtsdMatched && isRadioMatched;
   });
 
   const modifiedData = filteredData
@@ -110,9 +117,14 @@ const TableDoiSoat: React.FC<{ activeButton: string }> = ({ activeButton }) => {
     },
     
     {
-      title: "",
-      dataIndex: "tt",
-      key: "tt",
+      title: "Tình trạng đổi soát",
+      dataIndex: "ttds",
+      key: "ttds",
+      render: (tt: string) => (
+        <span style={{ color: tt.length > 11 ? "grey" : "red" }}>
+          {tt.toLowerCase()}
+        </span>
+      ),
     },
   ];
 
@@ -150,13 +162,32 @@ const TableDoiSoat: React.FC<{ activeButton: string }> = ({ activeButton }) => {
     },
     
     {
-      title: "",
-      dataIndex: "tt",
-      key: "tt",
+      title: "Tình trạng đổi soát",
+      dataIndex: "ttds",
+      key: "ttds",
+      render: (tt: string) => (
+        <span style={{ color: tt.length > 11 ? "grey" : "red" }}>
+          {tt.toLowerCase()}
+        </span>
+      ),
     },
+   
   ];
-
   const columns = activeButton === "giaDinh" ? columnsGiaDinh : columnsSuKien;
+
+  const [chotDoiSoatClicked, setChotDoiSoatClicked] = useState(false);
+
+  const handleChotDoiSoatClick = () => {
+    // Update the data to mark items that have not been checked as "Đã đổi soát"
+    const updatedData = filteredBySearchData.map((item: any) => ({
+      ...item,
+      ttds: item.ttds === "Chưa đổi soát" ? "Đã đổi soát" : item.ttds,
+    }));
+    setFilteredBySearchData(updatedData);
+
+    // Update the button text to "Xuất file (.csv)"
+    setChotDoiSoatClicked(true);
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -165,6 +196,22 @@ const TableDoiSoat: React.FC<{ activeButton: string }> = ({ activeButton }) => {
   if (error) {
     return <div>Error: {error}</div>;
   }
+
+  const renderButton = () => {
+    if (chotDoiSoatClicked) {
+      return (
+        <Button className="col_t1" onClick={handleChotDoiSoatClick}>
+          Xuất file (.csv)
+        </Button>
+      );
+    } else {
+      return (
+        <Button className="col_t12" onClick={handleChotDoiSoatClick}>
+          Chốt đổi soát
+        </Button>
+      );
+    }
+  };
 
   return (
     <Layout>
@@ -180,21 +227,16 @@ const TableDoiSoat: React.FC<{ activeButton: string }> = ({ activeButton }) => {
           />
         </Col>
         <Col span={5}>
-          
-          <Button className="col_t12">Chốt đổi soát</Button>
+          {renderButton()}
         </Col>
       </Row>
       <Row>
         <Col span={24}>
           <Table
             columns={columns}
-            dataSource={
-              activeButton === "giaDinh" ? modifiedDataGiaDinh : modifiedDataSuKien
-            }
+            dataSource={activeButton === "giaDinh" ? modifiedDataGiaDinh : modifiedDataSuKien}
             pagination={false}
-            rowClassName={(record, index) =>
-              index % 2 === 0 ? "even-row" : "odd-row"
-            }
+            rowClassName={(record, index) => index % 2 === 0 ? "even-row" : "odd-row"}
           />
           <Pagination
             className="col_pagination"

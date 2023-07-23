@@ -2,49 +2,49 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
 
-interface PageDataGD {
+interface DataGD {
   stt: string;
   sove: string;
   ngaysd: string;
   tenloai: string;
   checkin: string;
-  tt:string;
+  ttds:string;
   tsk: string;
 }
 
-interface PageDataSK extends PageDataGD {
+interface DataSK extends DataGD {
   tsk: string;
 }
 
-export const fetchPageDataGD = createAsyncThunk("page/fetchPageDataGD", async () => {
-  const pageCollection = collection(firestore, "dataDoiSoat");
+export const fetchDataGD = createAsyncThunk("dataDS/fetchPageDataGD", async () => {
+  const pageCollection = collection(firestore, "dataDS");
   const querySnapshot = await getDocs(pageCollection);
-  const pageData: PageDataGD[] = [];
+  const pageData: DataGD[] = [];
 
   querySnapshot.forEach((doc) => {
-    const page = doc.data() as PageDataGD;
-    pageData.push(page);
+    const dataDS = doc.data() as DataGD;
+    pageData.push(dataDS);
   });
 
   return pageData;
 });
 
-export const fetchPageDataSK = createAsyncThunk("page/fetchPageDataSK", async () => {
-  const pageCollection = collection(firestore, "dataDoiSoat");
+export const fetchDataSK = createAsyncThunk("dataDS/fetchPageDataSK", async () => {
+  const pageCollection = collection(firestore, "dataDS");
   const querySnapshot = await getDocs(pageCollection);
-  const pageData: PageDataSK[] = [];
+  const pageData: DataSK[] = [];
 
   querySnapshot.forEach((doc) => {
-    const page = doc.data() as PageDataSK;
-    pageData.push(page);
+    const dataDS = doc.data() as DataSK;
+    pageData.push(dataDS);
   });
 
   return pageData;
 });
 
 interface PageState {
-  dataGD: PageDataGD[];
-  dataSK: PageDataSK[];
+  dataGD: DataGD[];
+  dataSK: DataSK[];
   loading: boolean;
   error: string | null;
 }
@@ -56,32 +56,32 @@ const initialState: PageState = {
   error: null,
 };
 export const pageSlice = createSlice({
-  name: "page",
+  name: "dataDS",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchPageDataGD.pending, (state) => {
+      .addCase(fetchDataGD.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchPageDataGD.fulfilled, (state, action) => {
+      .addCase(fetchDataGD.fulfilled, (state, action) => {
         state.loading = false;
         state.dataGD = action.payload;
       })
-      .addCase(fetchPageDataGD.rejected, (state, action) => {
+      .addCase(fetchDataGD.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch data";
       })
-      .addCase(fetchPageDataSK.pending, (state) => {
+      .addCase(fetchDataSK.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchPageDataSK.fulfilled, (state, action) => {
+      .addCase(fetchDataSK.fulfilled, (state, action) => {
         state.loading = false;
         state.dataSK = action.payload;
       })
-      .addCase(fetchPageDataSK.rejected, (state, action) => {
+      .addCase(fetchDataSK.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch data";
       });

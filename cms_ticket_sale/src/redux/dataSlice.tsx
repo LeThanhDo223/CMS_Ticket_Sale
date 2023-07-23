@@ -70,6 +70,7 @@ export const pageSlice = createSlice({
       .addCase(fetchPageDataGD.fulfilled, (state, action) => {
         state.loading = false;
         state.dataGD = action.payload;
+        state.dataGD.sort((a, b) => parseInt(a.stt) - parseInt(b.stt)); // Sắp xếp dataGD
       })
       .addCase(fetchPageDataGD.rejected, (state, action) => {
         state.loading = false;
@@ -82,6 +83,7 @@ export const pageSlice = createSlice({
       .addCase(fetchPageDataSK.fulfilled, (state, action) => {
         state.loading = false;
         state.dataSK = action.payload;
+        state.dataSK.sort((a, b) => parseInt(a.stt) - parseInt(b.stt)); // Sắp xếp dataSK
       })
       .addCase(fetchPageDataSK.rejected, (state, action) => {
         state.loading = false;

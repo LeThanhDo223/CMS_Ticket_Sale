@@ -5,6 +5,10 @@ import type { DatePickerProps } from 'antd';
 import "../css/Style.css";
 import MenuHeader from "../component/MenuHeader";
 import MenuSider from "../component/MenuSider";
+import DemoArea from "../ThongKe/Demo";
+import { Footer } from "antd/es/layout/layout";
+import DemoPie from '../ThongKe/TronSK';
+import DemoPieDG from "../ThongKe/TronGD";
 
 const { Header, Content, Sider } = Layout;
 
@@ -43,10 +47,36 @@ const ThongKe: React.FC = () => {
               <DatePicker  onChange={onChange} picker="month" />
               </Col>
             </Row>
+            <Row>
+              <Col style={{height:"250px"}} span={24}>
+              <DemoArea />
+              </Col>
+            </Row>
+            <Row>
+              <Col span={24}>
+              <p>Tổng doanh thu theo tuần</p>
+              <h5>525.145.000/đồng</h5>
+              <p></p>
+              </Col>
+            </Row>
+            
+            <Row>
+              <Col span={6}>
+                <DatePicker></DatePicker>
+              </Col>
+              <Col span={7}>
+              <DemoPieDG />
+              </Col>
+              <Col span={7}>
+              <DemoPie />
+              </Col>
+              
+            </Row>
           </div>
+          
         </Content>
-        
       </Layout>
+      
     </Layout>
   );
 };

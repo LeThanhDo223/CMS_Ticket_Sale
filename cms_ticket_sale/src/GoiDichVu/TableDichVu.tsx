@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Layout, Row, Col, Table, Tag, Pagination } from "antd";
+import { Layout, Row, Col, Table, Tag, Pagination,Input, Button } from "antd";
 import { RootState } from "../redux/store";
 import "../QuanLyVe/QuanLyVe.css";
 import { fetchPageDichVu } from "../redux/dataDichVu";
 import { PageDichVu } from "../redux/dataDichVu";
 import CapNhat from "./CapNhat";
+import ThemGoiVe from "./ThemGoiVe";
+
 
 const TableDichVu: React.FC = () => {
+  const { Search } = Input;
   // Khai báo state và sử dụng useSelector, useDispatch, useEffect
   const dispatch = useDispatch();
   const dataDV = useSelector((state: RootState) => state.dataDV);
@@ -35,9 +38,11 @@ const TableDichVu: React.FC = () => {
     const gioadArray = currentData.map((item: PageDichVu) => item.gioad);
     setGioad(gioadArray.join(", "));
   }, [currentData]);
+ 
+  
+  const sortedData = [...currentData].sort((a, b) => parseInt(a.stt) - parseInt(b.stt));
 
-  const modifiedData = currentData
-    .slice(startIndex, endIndex)
+  const modifiedData = sortedData.slice(startIndex, endIndex);
    
   const columnsDichVu = [
     {
@@ -133,7 +138,15 @@ const TableDichVu: React.FC = () => {
 
   return (
     <Layout>
-      <Row className="col_mt1">{/* Phần tìm kiếm */}</Row>
+       <Row className="col_mt1">
+                <Col span={19}>
+                  <Search className="timkiem2" placeholder="Tìm bằng vé số"  />
+                </Col>
+                <Col span={5}>
+                  <Button className="col_b1">Xuất file (.csv)</Button>
+                  <ThemGoiVe/>
+                </Col>
+              </Row>
       <Row>
         <Col span={24}>
           <Table

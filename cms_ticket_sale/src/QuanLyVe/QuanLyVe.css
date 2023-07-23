@@ -73,3 +73,18 @@ font-style: normal;
 font-weight: 700;
 line-height: 26px; /* 144.444% */
 }
+:where(.css-dev-only-do-not-override-14wwjjs).ant-col-19 {
+    background: white;
+}
+:where(.css-dev-only-do-not-override-14wwjjs).ant-col-5 {
+    background: white;
+}
+:where(.css-dev-only-do-not-override-14wwjjs).ant-btn-primary {
+    background-color: #c5c5c5;
+}
+:where(.css-dev-only-do-not-override-14wwjjs).ant-pagination .ant-pagination-item-active {
+    border-color: #FF993C;
+}
+:where(.css-dev-only-do-not-override-14wwjjs).ant-pagination .ant-pagination-item-active a {
+    color: #FF993C;
+}

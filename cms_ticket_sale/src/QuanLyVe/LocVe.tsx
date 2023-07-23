@@ -1,21 +1,24 @@
 import React, { useState } from "react";
 import { Button, Modal, DatePicker, Space, Row, Col, Radio, Checkbox } from "antd";
 import { FilterOutlined } from "@ant-design/icons";
-import type { CheckboxValueType } from "antd/es/checkbox/Group";
+import dayjs from "dayjs";
 import { RadioChangeEvent } from "antd/es/radio";
+import { CheckboxValueType } from "antd/es/checkbox/Group"; // Import CheckboxValueType correctly
 
 interface FilterProps {
-  onFilter: (selectedTtsd: string | null, selectedCheck: string[]) => void;
+  onFilter: (
+    selectedTtsd: string | null,
+    selectedCheck: string[],
+    dateRange: string | null
+  ) => void;
 }
 
 const LocVe: React.FC<FilterProps> = ({ onFilter }) => {
   const [open, setOpen] = useState(false);
   const [checkedValues, setCheckedValues] = useState<CheckboxValueType[]>([]);
   const [selectedTtsd, setSelectedTtsd] = useState<string | null>(null);
-
-  const showModal = () => {
-    setOpen(true);
-  };
+  const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null);
+  const [endDate, setEndDate] = useState<dayjs.Dayjs | null>(null);
 
   const handleOk = () => {
     setOpen(false);
@@ -25,10 +28,6 @@ const LocVe: React.FC<FilterProps> = ({ onFilter }) => {
     setOpen(false);
   };
 
-  const onDateChange = () => {
-    // Handle date change logic here
-  };
-
   const onChange = (values: CheckboxValueType[]) => {
     if (values.includes("Tất cả")) {
       setCheckedValues(["Tất cả"]); // Include "Tất cả" option
@@ -36,7 +35,6 @@ const LocVe: React.FC<FilterProps> = ({ onFilter }) => {
       setCheckedValues(values.filter((value) => value !== "Tất cả"));
     }
   };
-  
 
   const handleTtsdChange = (e: RadioChangeEvent) => {
     setSelectedTtsd(e.target.value ?? null);
@@ -44,8 +42,21 @@ const LocVe: React.FC<FilterProps> = ({ onFilter }) => {
 
   const handleFilter = () => {
     const processedCheck = checkedValues.includes("Tất cả") ? [] : checkedValues.map(String);
-    onFilter(selectedTtsd, processedCheck);
-    setOpen(false)
+
+    // If both start and end dates are selected, format them as "Từ ngày - Tới ngày"
+    let dateRange = null;
+    if (startDate && endDate) {
+      dateRange = `${startDate.format("DD-MM-YYYY")} - ${endDate.format("DD-MM-YYYY")}`;
+    }
+
+    // Use the date range and other selected values to filter
+    onFilter(selectedTtsd, processedCheck, dateRange);
+
+    setOpen(false);
+  };
+
+  const showModal = () => {
+    setOpen(true);
   };
 
   return (
@@ -70,11 +81,17 @@ const LocVe: React.FC<FilterProps> = ({ onFilter }) => {
         <Space direction="horizontal">
           <div>
             <p>Từ ngày</p>
-            <DatePicker onChange={onDateChange} />
+            <DatePicker
+              onChange={(date) => setStartDate(date)}
+              value={startDate}
+            />
           </div>
           <div>
             <p>Đến ngày</p>
-            <DatePicker onChange={onDateChange} />
+            <DatePicker
+              onChange={(date) => setEndDate(date)}
+              value={endDate}
+            />
           </div>
         </Space>
         <Row>

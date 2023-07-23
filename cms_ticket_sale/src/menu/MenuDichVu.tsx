@@ -25,15 +25,6 @@ const MenuDichVu: React.FC = () => {
                   <h2 className="col_texth2">Danh sách gói vé</h2>
                 </Col>
             </Row>
-            <Row className="col_mt1">
-                <Col span={19}>
-                  <Search className="timkiem2" placeholder="Tìm bằng vé số"  />
-                </Col>
-                <Col span={5}>
-                  <Button className="col_b1">Xuất file (.csv)</Button>
-                  <ThemGoiVe/>
-                </Col>
-              </Row>
               <Row>
               <Col span={24}>
                 <TableDichVu />
